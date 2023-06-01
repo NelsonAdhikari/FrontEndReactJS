@@ -14,6 +14,8 @@ import Contact from './pages/contact';
 import { ToastContainer, Zoom } from 'react-toastify';
 import Register from './pages/register';
 import Login from './pages/login';
+import Home from './pages/users/home';
+import UserProvider from './context/UserProvider';
 
 
 
@@ -22,6 +24,7 @@ function App() {
  //jsx-syntax extension of  jsx
   return (
     //setting up routes
+    <UserProvider>
     <BrowserRouter>
       <ToastContainer position="bottom-center" theme="dark" draggable transition={Zoom}/>
     <CustomNavbar/>
@@ -34,13 +37,17 @@ function App() {
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
+
         <Route path="/users" element={<Dashboard/>}>
+        <Route path="home" element={<Home/>}/>
         <Route path="profile" element={<Profile/>}/>
+
         <Route path="about" element={<AboutUser/>}/>
         </Route>
       </Routes>
 
     </BrowserRouter>
+    </UserProvider>
   );
 }
 

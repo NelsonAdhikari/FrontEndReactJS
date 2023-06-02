@@ -5,7 +5,7 @@ import logo from "../assets/StationaryLogo.png";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { registerUser } from "../services/user.service";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const Register=()=>{
@@ -18,7 +18,7 @@ const Register=()=>{
       gender:'', 
  })
 
-//  const navigate = useNavigate();
+ const navigate = useNavigate();
 
  const handleChange=(event,property)=>{
   // console.log(event)
@@ -34,6 +34,7 @@ const Register=()=>{
   isError:false,
   errorData:null
 })
+console.log(data);
 
  const clearData=()=>{
     setData({
@@ -90,7 +91,7 @@ const Register=()=>{
           // success handler
               console.log(userData)
               toast.success("Registration Successful !!");
-              // navigate("/login");
+              navigate("/login");
               clearData();
         })
         .catch(error=>{

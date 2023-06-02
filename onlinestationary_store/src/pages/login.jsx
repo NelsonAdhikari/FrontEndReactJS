@@ -8,11 +8,13 @@ import Base from '../components/Base';
 import logo from '../assets/StationaryLogo.png';
 
 
+
+
 const Login = () => {
   let redirect= useNavigate();
   const userContext=useContext(UserContext);
 
-  let [data, setData] = useState({
+  const [data, setData] = useState({
     email: '',
     password: ''
   });
@@ -21,6 +23,9 @@ const Login = () => {
     errorData: null,
     isError: false
   });
+
+  
+ const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -47,6 +52,9 @@ const Login = () => {
 
   const submitForm = (event) => {
     event.preventDefault();
+    console.log(data)
+
+    //client side validations
 
     if (data.email === undefined || data.email.trim() === '') {
       toast.error('Email Required!!');
@@ -58,30 +66,34 @@ const Login = () => {
       return;
     }
 
+    //login api 
+
     setLoading(true)
     loginUser(data)
       .then((data) => {
         console.log(data)
         toast.success("Logged In")
+        navigate("/users/home");
         setError({
           errorData: null,
           isError: false
         })
 
-        userContext.setIslogin(true)
+        userContext.isLogin(true)
         userContext.setUserData(data)
         redirect("/users/home")
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error.response.data.message)
+        // toast.error(error.response.data.message)
+        
         setError({
           errorData: error,
           isError: true
         });
       })
       .finally(() => {
-        setLoading(false);
+        setLoading(false)
       })
   }
 

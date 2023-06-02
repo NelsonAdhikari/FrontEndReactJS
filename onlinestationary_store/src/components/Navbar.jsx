@@ -4,9 +4,11 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logo from "../assets/StationaryLogo.png";
 import { NavLink } from 'react-router-dom';
+import UserContext from '../context/UserContext';
 
 
 const CustomNavbar=()=>{
+  // const userContext=useContext(UserContext)
     return (
         <Navbar className='bg-navbar-color' collapseOnSelect expand="lg" bg="primary" variant="dark">
         <Container>

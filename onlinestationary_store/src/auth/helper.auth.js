@@ -33,6 +33,7 @@ export const getDataFromLocalStorage=()=>{
 
 export const isLoggedIn=()=>{
     if(getTokenFromLocalStorage()){
+        //server call
         return true;
     } else{
         return false;

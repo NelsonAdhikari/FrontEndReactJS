@@ -1,10 +1,13 @@
 import { useContext } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
 import UserContext from "../../context/user.context";
 import { Card, Container, Row ,Col, Button} from "react-bootstrap";
+import { isLoggedIn } from "../../auth/helper.auth";
 
 const Dashboard=()=>{
     const userContext=useContext(UserContext);
+
+    // const redirect = useNavigate()
 
     //private dashboard view
 
@@ -43,7 +46,7 @@ const Dashboard=()=>{
 
 
     return(
-        (userContext.isLogin) ? dashboardView() : notLoggedInView()
+        (isLoggedIn()) ? dashboardView() : <Navigate to="/login" />
      )
 } 
 

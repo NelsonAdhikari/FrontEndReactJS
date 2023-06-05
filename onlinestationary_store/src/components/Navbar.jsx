@@ -53,6 +53,8 @@ const CustomNavbar=()=>{
                (userContext.isLogin) ? (
                <>
                <Nav.Link as={NavLink} to="/users/home">{userContext.userData.user.email}</Nav.Link>
+               <Nav.Link as={NavLink} to="/users/orders">Orders</Nav.Link>
+
               <Nav.Link onClick={doLogout}>Logout</Nav.Link>
               </>
               ) : (

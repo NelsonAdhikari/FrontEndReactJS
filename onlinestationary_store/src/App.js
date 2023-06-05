@@ -16,6 +16,7 @@ import Register from './pages/register';
 import Login from './pages/login';
 import Home from './pages/users/home';
 import UserProvider from './context/user.provider';
+import Order from './pages/users/order';
 
 
 
@@ -41,8 +42,9 @@ function App() {
         <Route path="/users" element={<Dashboard/>}>
         <Route path="home" element={<Home/>}/>
         <Route path="profile" element={<Profile/>}/>
-
         <Route path="about" element={<AboutUser/>}/>
+        <Route path="orders" element={<Order/>}/>
+
         </Route>
       </Routes>
 

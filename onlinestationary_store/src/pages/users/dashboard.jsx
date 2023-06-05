@@ -7,7 +7,7 @@ const Dashboard=()=>{
 
 <Outlet/>
 </div>
-    );
+    )
 }
 
-export default Dashboard;
+export default Dashboard

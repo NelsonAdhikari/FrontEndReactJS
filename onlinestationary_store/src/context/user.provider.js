@@ -1,9 +1,9 @@
 import { useContext, useState } from "react"
-import UserContext from "./UserContext"
+import UserContext from "./user.context"
 const UserProvider =({children})=>
 {
-    const [isLogin,setIsLogin]=useState(false) 
-    const [userData,setUserData]=useState(null)
+    const [isLogin,setIsLogin]=useState(false); 
+    const [userData,setUserData]=useState(null);
 
     /*
         userData:{
@@ -24,7 +24,7 @@ const UserProvider =({children})=>
                     }}>
                 {children}
             </UserContext.Provider>
-        )
-}
+        );
+};
 
 export default UserProvider;

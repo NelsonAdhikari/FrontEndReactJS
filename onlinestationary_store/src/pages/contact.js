@@ -8,6 +8,6 @@ const Contact=()=>{
              <div><h1>This is Contact Page.</h1></div>
        </Base>
     );
-}
+};
 
 export default Contact;

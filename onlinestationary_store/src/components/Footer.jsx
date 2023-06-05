@@ -7,7 +7,7 @@ const Footer=()=>{
             <p>All rights reserved - <b>Nelson Adhikari</b></p>
             
         </Container>
-    );
+    )
 }
 
-export default Footer;
+export default Footer

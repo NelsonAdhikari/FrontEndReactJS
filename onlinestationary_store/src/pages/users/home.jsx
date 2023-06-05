@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import UserContext from "../../context/UserContext";
+import UserContext from "../../context/user.context";
 
 const Home=()=>{
         const userContext=useContext(UserContext);
@@ -8,8 +8,9 @@ return(
         {console.log(userContext)}
         {JSON.stringify(userContext)}
         {console.log(userContext)}
-        <h1>user is logged in {userContext.isLogin+ ''}</h1>
-        <h1>Welcome User DashBoard</h1>
+        <h1>Welcome {userContext.userData?.user?.name}</h1>
+        <h1>user is logged in - {userContext.isLogin + ''}</h1>
+
        
     </div>
       
@@ -17,4 +18,4 @@ return(
 )
 }
 
-export default Home;
+export default Home

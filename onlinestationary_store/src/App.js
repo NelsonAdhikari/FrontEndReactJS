@@ -15,7 +15,7 @@ import { ToastContainer, Zoom } from 'react-toastify';
 import Register from './pages/register';
 import Login from './pages/login';
 import Home from './pages/users/home';
-import UserProvider from './context/UserProvider';
+import UserProvider from './context/user.provider';
 
 
 

@@ -87,12 +87,14 @@ const Login = () => {
         })
         // redirect to dashboard
 
-        userContext.setIsLogin(true)
-        userContext.setUserData(data)
+        // userContext.setIsLogin(true)
+        // userContext.setUserData(data)
+
+         userContext.login(data)
        
         redirect("/users/home")
 
-        // userContext.login(data)
+       
         
         // navigate("/users/home")
       })

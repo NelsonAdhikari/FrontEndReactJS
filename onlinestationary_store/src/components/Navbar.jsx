@@ -10,6 +10,9 @@ import { useContext } from 'react';
 
 const CustomNavbar=()=>{
   const userContext=useContext(UserContext)
+  const doLogout=()=>{
+    userContext.logout()
+  }
     return (
         <Navbar className='bg-navbar-color' collapseOnSelect expand="lg" bg="primary" variant="dark">
         <Container>
@@ -45,8 +48,21 @@ const CustomNavbar=()=>{
             </Nav>
             <Nav>
               <Nav.Link as={NavLink} to="/cart">Cart( 40 )</Nav.Link>
-              <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+
+              {
+               (userContext.isLogin) ? (
+               <>
+               <Nav.Link as={NavLink} to="/users/home">{userContext.userData.user.email}</Nav.Link>
+              <Nav.Link onClick={doLogout}>Logout</Nav.Link>
+              </>
+              ) : (
+              <>
+               <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
               <Nav.Link as={NavLink} to="/register">SignUp</Nav.Link>
+               </>
+               )
+              }
+              
               
             </Nav>
           </Navbar.Collapse>

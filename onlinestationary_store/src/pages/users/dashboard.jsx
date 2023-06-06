@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
-import UserContext from "../../context/user.context";
+import UserContext from "../../context/UserContext";
 import { Card, Container, Row ,Col, Button} from "react-bootstrap";
-import { isLoggedIn } from "../../auth/helper.auth";
+import { isLoggedIn } from "../../auth/HelperAuth";
 
 const Dashboard=()=>{
     const userContext=useContext(UserContext);
@@ -13,7 +13,7 @@ const Dashboard=()=>{
 
     const dashboardView=()=>{
         return (<div>
-            <h1>This is User Dashboard</h1>
+            {/* <h1>This is User Dashboard</h1> */}
             <Outlet/>
         </div>)
       

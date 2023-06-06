@@ -3,7 +3,7 @@ import { Alert, Button, Card, Col, Container, Form, Row, Spinner } from 'react-b
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loginUser } from '../services/user.service';
-import UserContext from '../context/user.context';
+import UserContext from '../context/UserContext';
 import Base from '../components/Base';
 import logo from '../assets/StationaryLogo.png';
 

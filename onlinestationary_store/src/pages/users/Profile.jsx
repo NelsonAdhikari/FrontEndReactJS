@@ -1,10 +1,11 @@
-import { Alert, Col, Container, Row , Modal,Button, Card, Table,Form} from "react-bootstrap";
+import { Alert, Col, Container, Row , Modal,Button, Card, Table,Form, Spinner} from "react-bootstrap";
 import UserProfileView from "../../components/users/UserProfileView";
 import UserContext from "../../context/UserContext";
 import { useContext, useEffect, useState } from "react";
-import { getUser, updateUser } from "../../services/user.service";
+import { getUser, updateUser, updateUserProfilePicture } from "../../services/user.service";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import defaultImage from '../../assets/default_profile.jpg';
 
 
 
@@ -13,8 +14,17 @@ const Profile=()=>{
     const { userId }=useParams()
     const [user,setUser]=useState(null)
 
+    //state to handle image
+        const [image,setImage] = useState({
+            placeholder:defaultImage,
+            file: null
+        })
+
     //modals state
     const [show, setShow] = useState(false);
+
+    const [updateLoading,setUpdateLoading]=useState(false);
+
     const handleClose = () => setShow(false);
     const handleShowModal = () => 
     {
@@ -55,6 +65,7 @@ const Profile=()=>{
             [property]:event.target.value
         })
     }
+    //update user data by calling API
 
     const updateUserData=()=>{
         console.log("update check of user data")
@@ -67,16 +78,64 @@ const Profile=()=>{
             toast.error("about required !!")
             return
         }  
+        setUpdateLoading(true)
 
         updateUser(user).then(updatedUser=>{
             console.log(updatedUser)
             toast.success("User details Updated!!")
+            //update image:
+            if(image.file==null){
+                setUpdateLoading(false)
+                handleClose()
+                return
+            }
+            updateUserProfilePicture(image.file,user.userId)
+            .then(data=>{
+                console.log(data)
+                toast.success(data.message)
+                handleClose()
+                
+            })
+            .catch(error=>{
+                console.log(error);
+                toast.error("Image not Uploaded!!")
+            })
+            .finally(()=>{
+                setUpdateLoading(false)
+            })
+
+            // handleClose()
         })
         .catch(error=>{
             console.log(error)
             toast.error("Error! Update Failed")
+            setUpdateLoading(false)
         })
+       
     }
+
+    //function for image change 
+     const handleProfileImageChange=(event)=>{
+        // const localfile=event.target.files[0]
+        console.log(event.target.files[0])
+        if(event.target.files[0].type==='image/png'|| event.target.files[0].type==='image/jpeg'){
+            //preview show
+            const reader = new FileReader()
+            reader.onload = (r)=>{
+                setImage({
+                    placeholder:r.target.result,
+                    file:event.target.files[0]
+                })
+                console.log(r.target.result)
+                
+            }
+            reader.readAsDataURL(event.target.files[0])
+        }else{
+            toast.error("Invalid File Type!!")
+            image.file= null
+        }
+
+     }
 
     //update view
     const updateViewModal = () => {
@@ -91,6 +150,19 @@ const Profile=()=>{
                             <Card.Body>
                             <Table className="text-center" responsive striped bordered hover variant="info" >
                             <tbody>
+                                <tr>
+                                    <td>
+                                        Profile Image
+                                    </td>
+                                    <td>
+                                        {/* {image tag for preview} */}
+                                      <Container className="text-center mb-3">
+                                      <img style={{objectFit:'cover'}} height={200} width={200} src={image.placeholder} alt="" />
+                                      </Container>
+                                        <Form.Control type='file' onChange={handleProfileImageChange} />
+                                        <p className="text-center mt-2 ">Select your image Here!</p>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>Name</td>
                                     <td>
@@ -112,7 +184,8 @@ const Profile=()=>{
                                          placeholder="Enter new Password" 
                                          type="password"
                                          onChange={(event)=>updateFieldHandler(event,'password')}
-                                         />    
+                                         />  
+                                         <p>Leave blank for same password</p>  
                                     </td>
                                 </tr>
                                 <tr>
@@ -141,8 +214,14 @@ const Profile=()=>{
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={updateUserData}>
-            Save Changes
+          <Button variant="primary" onClick={updateUserData} disabled={updateLoading}>
+            <Spinner 
+            size="sm"
+            hidden={!updateLoading}
+            className={'me-2'}
+            />
+            <span hidden={!updateLoading}>Checking!!</span>
+           <span hidden={updateLoading}> Save Changes</span>
           </Button>
         </Modal.Footer>
       </Modal>

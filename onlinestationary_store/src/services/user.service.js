@@ -1,5 +1,6 @@
 //user related API calls
 import { publicAxios } from "./axios.service";
+import { privateAxios } from "./axios.service";
 
 //userData ko through bataw data aauxa in json from API
 
@@ -17,3 +18,9 @@ export const getUser=(userId)=>{
   return publicAxios.get(`/users/${userId}`).then(response=>response.data)
 
 }
+//update user
+export const updateUser=(user)=>{
+  return privateAxios
+  .put(`/users/${user.userId}`,user)
+  .then((response)=>response.data);
+};

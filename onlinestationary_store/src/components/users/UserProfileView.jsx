@@ -1,12 +1,13 @@
 import { Button, Card, Container, Table } from "react-bootstrap"
-import profileImage from "../../assets/profile.jpg";
+import profileImage from "../../assets/default_profile.jpg";
 import { BASE_URL } from "../../services/helper.service";
 
 const UserProfileView = ({user=null}) =>{
     const  profileStyle={
-        maxHeight:"200px",
-        maxWidth:"200px",
-        borderRadius:"50%"
+        height:"200px",
+        width:"200px",
+        borderRadius:"50%",
+        objectFit:"cover"
     }
     return(
         <>
@@ -15,7 +16,7 @@ const UserProfileView = ({user=null}) =>{
                 <Card className="m-3 border-0 shadow-sm ">
                 <Card.Body>
                     <Container className="text-center my-3 ">
-                        <img className="border border-info" style={profileStyle} src={user.imageName ? BASE_URL+'/users/image'+user.userId :profileImage} alt="Profile Image" />
+                        <img className="border border-info" style={profileStyle} src={user.imageName ? BASE_URL+'/users/image/'+user.userId :profileImage} alt="Profile Image" />
                     </Container>
                      <h1 className="text-center text-uppercase fw-bold text-primary"> {user.name} </h1>
                      <div className="mt-3">
@@ -41,7 +42,7 @@ const UserProfileView = ({user=null}) =>{
                                 </tr>
                                 <tr>
                                     <td>Roles</td>
-                                    <td>{user.roles.map(role=><div>{role.roleName}</div>)}</td>
+                                    <td>{user.roles.map(role=><div key={role.roleId}>{role.roleName}</div>)}</td>
                                 </tr>
                             </tbody>
                         </Table>

@@ -12,3 +12,8 @@ export const loginUser=(loginData)=>{
   return publicAxios.post('/auth/login',loginData).then((response)=>response.data);
 
 };
+
+export const getUser=(userId)=>{
+  return publicAxios.get(`/users/${userId}`).then(response=>response.data)
+
+}

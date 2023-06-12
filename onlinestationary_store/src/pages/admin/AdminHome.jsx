@@ -1,6 +1,6 @@
 const AdminHome=()=>{
     return(
-        <h3>This is Admin Home</h3>
+        <p>This is Admin Home</p>
     )
 }
 

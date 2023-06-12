@@ -1,4 +1,4 @@
-import { Alert, Col, Container, Row , Modal,Button, Card, Table,Form, Spinner} from "react-bootstrap";
+import { Alert, Col, Container, Row , Modal,Button, Card, Table,Form, Spinner, InputGroup} from "react-bootstrap";
 import UserProfileView from "../../components/users/UserProfileView";
 import UserContext from "../../context/UserContext";
 import { useContext, useEffect, useState } from "react";
@@ -19,6 +19,7 @@ const Profile=()=>{
             placeholder:defaultImage,
             file: null
         })
+
 
     //modals state
     const [show, setShow] = useState(false);
@@ -136,6 +137,16 @@ const Profile=()=>{
         }
 
      }
+     
+     
+   //clear the image
+     const clearImage=(event)=>{
+        setImage({
+            placeholder: defaultImage,
+            file : null
+        })
+
+    }
 
     //update view
     const updateViewModal = () => {
@@ -159,7 +170,10 @@ const Profile=()=>{
                                       <Container className="text-center mb-3">
                                       <img style={{objectFit:'cover'}} height={200} width={200} src={image.placeholder} alt="" />
                                       </Container>
+                                        <InputGroup>
                                         <Form.Control type='file' onChange={handleProfileImageChange} />
+                                        <Button onClick={clearImage} variant="outline-danger">Clear</Button>
+                                        </InputGroup>
                                         <p className="text-center mt-2 ">Select your image Here!</p>
                                     </td>
                                 </tr>

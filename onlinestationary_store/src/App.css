@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.list-group-item.active{
+  background: #84d0e5 !important;
+  color:black !important;
+  border: none !important;
+  border-radius: 10px;
+}
+
+.list-group-item{
+  /* border:none !important; */
+  /* margin-top: 2px;
+  border: 1px solid #61dafb !important; */
+}

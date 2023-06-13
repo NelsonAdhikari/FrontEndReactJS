@@ -111,10 +111,26 @@ const ViewCategories=()=>{
             toast.error("Image Url Required !!")
             return
           }
+
           updateCategory(selectedCategory)
           .then(data=>{
               console.log(data)
               toast.success("Category Updated")
+
+             const newCategories=categories.content.map(cat => {
+                if(cat.categoryId===selectedCategory.categoryId){
+                  cat.title=data.title
+                  cat.description=data.description
+                  cat.coverImage=data.coverImage
+                }
+
+                return cat;
+              })
+              setCategories({
+                ...categories,
+                content:newCategories
+              })
+              handleCloseUpdate()
           })
           .catch(error=>{
             console.log(error)

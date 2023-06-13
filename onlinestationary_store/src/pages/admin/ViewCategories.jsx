@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import CategoryView from "../../components/CategoryView"
-import {getCategories} from "../../services/CategoryService"
+import {deleteCategory,getCategories} from "../../services/CategoryService"
 import { toast } from "react-toastify"
 import Swal from "sweetalert2"
+import { Container, Spinner } from "react-bootstrap"
 
 const ViewCategories=()=>{
 
@@ -35,7 +36,7 @@ const ViewCategories=()=>{
 
         Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            text: "You won't be able to see this category!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -51,6 +52,14 @@ const ViewCategories=()=>{
                     'Your file has been deleted.',
                     'success'
                   )
+
+                  const newArray=categories.content.filter((c)=>{
+                    return c.categoryId!=categoryId
+                  })
+                  setCategories({
+                    ...categories,
+                    content: newArray
+                  })
               })
               .catch(error=>{
                 console.log(error)
@@ -61,15 +70,28 @@ const ViewCategories=()=>{
         }
         //api call
 
-    return(
-        <>
+    return (<div>
+
+              {/* {loader} */}
+              <Container className="text-center p-3" hidden={!loading}>
+                <Spinner/>
+                <div>
+                 <h3>Loading...</h3> 
+                  </div>
+              </Container>
+      {
+        (categories.content.length>0 ?  
+          (
+          <>
           {
             categories.content.map((category)=>{
                return( <CategoryView deleteCat={deleteCategoryMain} category={category} key={category.categoryId}/> )
             })
           }
         </>
-    )
+          ) : <h5 className="text-center">No Category Found !!</h5>)
+      }
+    </div>)
 }
 
 export default ViewCategories

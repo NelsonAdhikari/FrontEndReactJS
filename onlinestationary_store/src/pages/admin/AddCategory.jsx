@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { Card, Container, FormGroup, Form, Button} from "react-bootstrap"
+import { Card, Container, FormGroup, Form, Button, Spinner} from "react-bootstrap"
 import { toast } from "react-toastify"
+import { addCategory } from "../../services/CategoryService"
 
 
 const AddCategory=()=>{
@@ -9,6 +10,7 @@ const AddCategory=()=>{
         description: '',
         coverImage: ''
     })
+    const [loading,setLoading]=useState(false)
     const handleFieldChange=(event,property)=>{
         event.preventDefault()
         setCategory({
@@ -32,8 +34,34 @@ const AddCategory=()=>{
 
         }
         //call server api to app category
+        setLoading(true)
+        addCategory(category)
+        .then((data)=>{
+            //success
+            toast.success("Category Added Successfully")
+            console.log(data)
+            setCategory({
+                title:'',
+                description: '',
+                coverImage: ''
+            })
+        })
+        .catch(error=>{
+            console.log(error)
+            toast.error("Error in Category Adding!")
+        })
+            .finally(()=>{
+                setLoading(false)
+            })
 
-
+    }
+    const clearForm=(event)=>{
+        event.preventDefault()
+        setCategory({
+            title:'',
+            description:'',
+            coverImage: ''
+        })
     }
     return(
         <>
@@ -41,7 +69,7 @@ const AddCategory=()=>{
 
                 <Card className="border border-0 shadow">
 
-                    {JSON.stringify(category)}
+                    {/* {JSON.stringify(category)} */}
                     <Card.Body>
                         <h5>Add Category</h5>
 
@@ -71,13 +99,24 @@ const AddCategory=()=>{
                                 />  
                             </FormGroup>
                             <Container className="text-center mt-2">
-                                <Button type="submit" variant="success mt-2" size="sm">Add Category</Button>
-                                <Button variant="danger ms-2 mt-2" size="sm">Clear</Button>
+                                <Button type="submit" variant="success mt-2" size="sm"
+                                disabled={loading}
+                                >
+                                    <Spinner 
+                                     variant={'border'}
+                                     size={'sm'}
+                                     className='me-2'
+                                     hidden={!loading}
+                                    />
+                                    <span hidden={!loading}>Please Wait!!</span>
+                                    <span hidden={loading}>Add Category</span>
+                                    </Button>
+                                <Button onClick={clearForm} variant="danger ms-2 mt-2" size="sm">Clear</Button>
 
 
                             </Container>
                         </Form>
-                    </Card.Body>
+                    </Card.Body> 
                 </Card>
 
             </Container>

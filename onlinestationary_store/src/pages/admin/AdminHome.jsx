@@ -1,6 +1,6 @@
 const AdminHome=()=>{
     return(
-        <p>This is Admin Home</p>
+        <h1 className="text-center">Welcome To Admin DashBoard</h1>
     )
 }
 

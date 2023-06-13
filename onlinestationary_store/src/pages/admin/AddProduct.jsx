@@ -42,7 +42,7 @@ const AddProduct=()=>{
 
             <Card className="border border-0 shadow">
 
-                {JSON.stringify(product)}
+                {/* {JSON.stringify(product)} */}
                 <Card.Body>
                     <h5>Add Product</h5>
 

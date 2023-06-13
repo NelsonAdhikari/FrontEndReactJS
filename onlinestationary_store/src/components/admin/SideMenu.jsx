@@ -17,7 +17,7 @@ import {MdOutlineLogout} from 'react-icons/md'
 const SideMenu=()=>{
     return(
         <>
-            <ListGroup variant="flush" >
+            <ListGroup variant="flush"className="sticky-top" >
                 <ListGroup.Item as={NavLink} to="/admin/home" action>
                    <FaHome size={20}/>
                     <span className="ms-2">Home</span>

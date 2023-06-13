@@ -4,15 +4,16 @@ import {deleteCategory,getCategories, updateCategory} from "../../services/Categ
 import { toast } from "react-toastify"
 import Swal from "sweetalert2"
 import { Container, Spinner, Modal, Button, Form, FormGroup } from "react-bootstrap"
+import InfiniteScroll from "react-infinite-scroll-component"
 
 const ViewCategories=()=>{
 
     const [categories,setCategories]=useState({
         content:[]
     })
+    const [currentPage,setCurrentPage]=useState(0)
 
     const [selectedCategory,setSelectedCategory]=useState(undefined)
-
     const [loading,setLoading] = useState(false)
 //view modal
     const [show, setShow] = useState(false);
@@ -23,10 +24,10 @@ const ViewCategories=()=>{
     const handleCloseUpdate = () => setShowUpdate(false);
     const handleShowUpdate = () => setShowUpdate(true);
 
-
+    //initial page load
     useEffect(()=>{
         setLoading(true)
-        getCategories()
+        getCategories(0,6)
         .then(data=>{
             console.log(data)
             setCategories(data)
@@ -39,6 +40,30 @@ const ViewCategories=()=>{
             setLoading(false)
         })
     }, [])
+    //current page load
+    useEffect(()=>{
+      if(currentPage>0){
+        getCategories(currentPage,6)
+        .then(data=>{
+            console.log(data)
+            setCategories({
+              content:[...categories.content,...data.content],
+              lastPage:data.lastPage,
+              pageNumber:data.pageNumber,
+              pageSize:data.pageSize,
+              totalElements:data.totalElements,
+              totalPages:data.totalPages
+            })
+        })
+        .catch(error=>{
+            console.log(error)
+            toast.error("Error loading Category")
+        })
+       
+
+      }
+
+    },[currentPage])
         //delete category main function
         const deleteCategoryMain=(categoryId)=>{
             // alert(categoryId)
@@ -137,6 +162,11 @@ const ViewCategories=()=>{
             toast.error("Failed to Update Category")
           })
 
+        }
+        //load next page fuction
+        const loadNextPage=()=>{
+          console.log("loading next page")
+          setCurrentPage(currentPage+1)
         }
 
         // modal view: view and update
@@ -253,6 +283,17 @@ const ViewCategories=()=>{
         (categories.content.length>0 ?  
           (
           <>
+          <InfiniteScroll
+          dataLength={categories.content.length}
+          next={loadNextPage}
+          hasMore={!categories.lastPage}
+          loader={<h2 className="p-2 text-center">Loading...</h2>}
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+          >
           {
             categories.content.map((category)=>{
                return( 
@@ -265,6 +306,7 @@ const ViewCategories=()=>{
                /> )
             })
           }
+          </InfiniteScroll>
         </>
           ) : <h5 className="text-center">No Category Found !!</h5>)
       }

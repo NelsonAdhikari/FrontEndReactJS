@@ -19,3 +19,10 @@ export const deleteCategory=(categoryId)=>{
     .then((response)=>response.data);
 
 }
+//update category
+export const updateCategory=(category)=>{
+    return privateAxios
+    .put(`/categories/${category.categoryId}`,category)
+    .then((response)=>response.data);
+
+}

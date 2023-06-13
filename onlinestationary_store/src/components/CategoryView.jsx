@@ -1,7 +1,7 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap"
 import image from "../assets/default_profile.jpg"
 
-const CategoryView=({category,deleteCat})=>{
+const CategoryView=({category,deleteCat,viewCat,updateCat})=>{
     const imageStyle={
         width:"100px",
         height:"100px",
@@ -24,8 +24,8 @@ const CategoryView=({category,deleteCat})=>{
                     <h5>{category.title}</h5>
                     <p>{category.description}</p>
                     <Container className="text-center ">
-                        <Button size="sm" variant="warning">View</Button>
-                        <Button size="sm" variant="success ms-2">Update</Button>
+                        <Button size="sm" onClick={(event)=>viewCat(category)} variant="warning">View</Button>
+                        <Button size="sm" onClick={(event)=>updateCat(category)} variant="success ms-2">Update</Button>
                         <Button size="sm" variant="danger ms-2" onClick={(event)=>deleteCategory(category.categoryId)}>Delete</Button>
                     </Container>
                     </Col>

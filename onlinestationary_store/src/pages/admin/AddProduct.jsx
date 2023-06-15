@@ -1,8 +1,9 @@
-import { useState , useEffect} from "react"
+import { useState , useEffect, useRef} from "react"
 import { Button, Card, Col, Container, Form, FormGroup, InputGroup, Row } from "react-bootstrap"
 import { toast } from "react-toastify"
-import { addProductImage, createProductWithoutCategory } from "../../services/product.service"
+import { addProductImage, createProductInCategory, createProductWithoutCategory } from "../../services/product.service"
 import {getCategories} from '../../services/CategoryService'
+import { Editor } from "@tinymce/tinymce-react"
 
 const AddProduct=()=>{
 
@@ -21,10 +22,15 @@ const AddProduct=()=>{
     const [categories,setCategories]=useState(undefined)
     const [selectedCategoryId,setSelectedCategoryId]=useState("none")
 
+    //for rich text editor
+    const editorRef=useRef()
+
     useEffect(()=>{
         getCategories(0,1000).then(data=>{
             console.log(data)
             setCategories(data)
+            
+           
         })
         .catch((error)=>{
             console.log(error)
@@ -58,6 +64,23 @@ const AddProduct=()=>{
             })
         }
     }
+
+    const clearForm=()=>{
+        editorRef.current.setContent('')
+        setProduct({
+                title: '',
+                description:'',
+                price:0,
+                discountedPrice:0,
+                quantity:1,
+                live:false,
+                stock:true,
+                image:undefined,
+                imagePreviw:undefined
+        })
+        
+    }
+
     //submit add product form
     const submitAddProductForm=(event)=>{
         event.preventDefault()
@@ -80,37 +103,61 @@ const AddProduct=()=>{
             return
         }
         //validate
-
+        if(selectedCategoryId==='none')
+        {
         //create product without category
         createProductWithoutCategory(product)
         .then(data=>{
             console.log(data);
+            toast.success("Product Created")
+            if(!product.image){
+                clearForm()
+                return
+            }
+            
 
             //image upload
             addProductImage(product.image,data.productId)
             .then(data=>{
                 console.log(data)
                 toast.success("Image Saved!!")
-                setProduct({
-                    title: '',
-                    description:'',
-                    price:0,
-                    discountedPrice:0,
-                    quantity:1,
-                    live:false,
-                    stock:true,
-                    image:undefined,
-                    imagePreviw:undefined
-                })
+                clearForm()
     
             })
             .catch(error=>{
                 console.log(error)
                 toast.error("Error in upload Image!!")
             })
-
-            toast.success("Product Created")
+   
            
+        })
+        .catch(error=>{
+            console.log(error)
+            toast.error("Product add Failed!!")
+        })
+    }else{
+        //create product in category
+        createProductInCategory(product,selectedCategoryId).then(data=>{
+            console.log(data);
+            toast.success("product is created")
+            if(!product.image){
+                clearForm()
+                return
+            }
+
+            //image upload
+            addProductImage(product.image,data.productId)
+            .then(data=>{
+                console.log(data)
+                toast.success("Image Saved!!")
+                clearForm()
+    
+            })
+            .catch(error=>{
+                console.log(error)
+                toast.error("Error in upload Image!!")
+            })
+                
         })
         .catch(error=>{
             console.log(error)
@@ -119,10 +166,15 @@ const AddProduct=()=>{
 
     }
 
+    }
+
+       
+
 
  const formView=()=>{
     return (
         <>
+        {/* {JSON.stringify(product)} */}
         <Card className="border border-0 shadow">
             {/* {JSON.stringify(product)} */}
             <Card.Body>
@@ -143,7 +195,8 @@ const AddProduct=()=>{
                     {/* {product Description} */}
                 <Form.Group className="mt-3">
                     <Form.Label>Product Description</Form.Label>
-                    <Form.Control 
+
+                    {/* <Form.Control 
                        as={'textarea'}
                        rows={6} 
                        placeholder="Enter here"
@@ -152,6 +205,28 @@ const AddProduct=()=>{
                         description:event.target.value
                     })}
                     value={product.description}
+                    /> */}
+                    <Editor 
+                    apiKey="09algf1b77mw8okegtku4jup0gmzf0j5sun6vmyk7iszlaj1"
+                    onInit={(evt, editor) => editorRef.current = editor}
+                    init={{
+                        height: 380,
+                        menubar: true,
+                        plugins: [
+                          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                          'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                        ],
+                        toolbar: 'undo redo | blocks | ' +
+                          'bold italic forecolor | alignleft aligncenter ' +
+                          'alignright alignjustify | bullist numlist outdent indent | ' +
+                          'removeformat | help',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                      }}
+                      onEditorChange={()=>setProduct({
+                        ...product,
+                        description:editorRef.current.getContent()
+                      })}
                     />
                 </Form.Group>       
                 </FormGroup>
@@ -275,9 +350,11 @@ const AddProduct=()=>{
                     variant="outline-warning">Clear</Button>
                     </InputGroup> 
                 </Form.Group >
+
+                   {/* {JSON.stringify(selectedCategoryId)} */}
                 <Form.Group className="mt-3">
                     <Form.Label>Select Category</Form.Label>
-                      <Form.Select value={setSelectedCategoryId} onChange={(event)=>setSelectedCategoryId(event.target.value)}>
+                      <Form.Select  onChange={(event)=>setSelectedCategoryId(event.target.value)}>
                         <option value="none">None</option>
                           {
                             (categories) ? <>
@@ -292,7 +369,7 @@ const AddProduct=()=>{
                 </Form.Group>
                 <Container className="text-center mt-3">
                 <Button type="submit" variant="success" size="sm">Add Product</Button>
-                <Button className="ms-2" variant="danger" size="sm">Clear</Button>
+                <Button onClick={clearForm} className="ms-2" variant="danger" size="sm">Clear</Button>
                 </Container>
 
                 </Form>

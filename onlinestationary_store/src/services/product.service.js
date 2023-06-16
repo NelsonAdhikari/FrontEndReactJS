@@ -24,3 +24,9 @@ export const addProductImage=(file,productId)=>{
     .post(`/products/image/${productId}`,formData)
     .then((response)=>response.data);
 }
+
+//get products
+export const getAllProducts=(pageNumber=0,pageSize=10,sortBy='title',sortDir='asc')=>{
+    return privateAxios.get(`/products?pageNumber=${pageNumber}&pageSize=${pageSize}&sort`,)
+
+}

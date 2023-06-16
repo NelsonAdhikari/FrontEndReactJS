@@ -26,7 +26,8 @@ export const addProductImage=(file,productId)=>{
 }
 
 //get products
-export const getAllProducts=(pageNumber=0,pageSize=10,sortBy='title',sortDir='asc')=>{
-    return privateAxios.get(`/products?pageNumber=${pageNumber}&pageSize=${pageSize}&sort`,)
+export const getAllProducts=(pageNumber=0,pageSize=10,sortBy='addedDate',sortDir="asc")=>{
+    return privateAxios.get(`/products?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`)
+    .then(response=>response.data);
 
 }

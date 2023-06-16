@@ -11,7 +11,7 @@ const AdminDashBoard=()=>{
     const dashboardView=()=>{
         return(
         <div>
-            <Container className="p-4">
+            <Container  className="p-4">
                 <Row>
                     <Col md={{
                         span:2,

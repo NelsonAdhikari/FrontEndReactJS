@@ -1,14 +1,27 @@
 import { useEffect } from "react"
 import { useState } from "react"
-import {  Card, Col, Container, Form, Pagination, Row, Table } from "react-bootstrap"
+import {  Card, Col, Container, Form, Pagination, Row, Table, Modal, Button } from "react-bootstrap"
 import { getAllProducts } from "../../services/product.service"
 import { toast } from "react-toastify"
 import SingleProductView from "../../components/admin/SingleProductView"
-import { PRODUCT_PAGE_SIZE } from "../../services/helper.service"
-import Swal from "sweetalert2"
+import { PRODUCT_PAGE_SIZE, getProductImageUrl } from "../../services/helper.service"
+import defaultImage from '../../assets/default_profile.jpg'
+
+
 
 const ViewProducts=()=>{
     const [products,setProducts]=useState(undefined)
+    const [currentProduct,setCurrentProduct]=useState(undefined)
+
+    const [show, setShow] = useState(false);
+    const closeProductViewModal = () => {
+            setShow(false)
+    };
+    const openProductViewModal = (event,product) => {
+        console.log(product) 
+        setCurrentProduct(product)   
+        setShow(true)
+    };
 
     useEffect(()=>{
         getProducts(0,PRODUCT_PAGE_SIZE,'addedDate','desc')
@@ -43,6 +56,64 @@ const ViewProducts=()=>{
             content:newArray
         })
     }
+
+     //modal view
+     const viewProductModalView=()=>{
+        return currentProduct &&( 
+            <>
+     
+
+            <Modal
+              show={show}
+              onHide={closeProductViewModal}
+              backdrop="static"
+              animation={false}
+              centered
+             
+              keyboard={false}
+              size={"xl"}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>{currentProduct.title}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {/* product picture */}
+                <Container className="text-center py-3">
+                    <img style={{
+                        height:'300px'
+                    }} src={currentProduct.productImageName?getProductImageUrl(currentProduct.productId):defaultImage} alt="" />
+                </Container>
+
+                {/* information table */}
+                <Table>
+                    <thead>
+                    <tr>
+                        <th>Info</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+
+                        </tr>
+                    </tbody>
+                </Table>
+
+               {/* description */}
+               <div className="p-2 border border-1" dangerouslySetInnerHTML={{__html:currentProduct.description}}>
+                
+               </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={closeProductViewModal}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={closeProductViewModal}>Save Changes</Button>
+              </Modal.Footer>
+            </Modal>
+          </>
+        )
+    }
+
     //products view
     const productsView=()=>{
             return(
@@ -72,7 +143,7 @@ const ViewProducts=()=>{
                     <tbody>
                         {
                             products.content.map((product,index)=>(
-                                <SingleProductView key={index} index={index} product={product} updateProductList={updateProductList} />
+                                <SingleProductView key={index} index={index} product={product} updateProductList={updateProductList} openProductViewModal={openProductViewModal} />
                             ))
                         }
                     </tbody>
@@ -103,6 +174,7 @@ const ViewProducts=()=>{
                     </Pagination>
                     
                 </Container>
+
                 </Card.Body>
 
                 </Card> 
@@ -120,6 +192,10 @@ const ViewProducts=()=>{
 
                 </Row>
             </Container>
+            {
+                viewProductModalView()
+            }
+            
         </>
     )
 }

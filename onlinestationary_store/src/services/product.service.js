@@ -31,3 +31,10 @@ export const getAllProducts=(pageNumber=0,pageSize=10,sortBy='addedDate',sortDir
     .then(response=>response.data);
 
 }
+
+//delete product
+export const deleteProduct=(productId)=>{
+    return privateAxios
+    .delete(`/products/${productId}`)
+    .then((response)=>response.data);
+}

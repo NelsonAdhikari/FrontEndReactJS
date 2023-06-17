@@ -2,9 +2,13 @@ import { Button } from "react-bootstrap"
 import {RiDeleteBin5Fill} from 'react-icons/ri' 
 import {GrView} from 'react-icons/gr'
 import {GrUpdate} from 'react-icons/gr'
+import { toast } from "react-toastify"
+import Swal from "sweetalert2"
+import { deleteProduct } from "../../services/product.service"
 const SingleProductView=({
     index,
-    product
+    product,
+    updateProductList
 })=>{
     const formatDate=(time)=>{
         return new Date(time).toLocaleString()
@@ -26,6 +30,34 @@ const SingleProductView=({
         }
         
     }
+
+    //delete product
+    const deleteProductLocal=(productId)=>{
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to see this category!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                //call api
+              deleteProduct(product.productId).then(data=>{
+                console.log(data);
+                toast.success("product deleted")
+ 
+                    updateProductList(productId)
+              
+              })
+              .catch(error=>{
+                console.log(error)
+                toast.error("Failed to delete product")
+              })
+            }
+          })
+    }
     
     return(
         <tr className={getBackgroundForProduct()}>
@@ -39,7 +71,7 @@ const SingleProductView=({
                             <td className="px-2 small">{product.category ? product.category.title : 'null'}</td>
                             <td className="px-2 small">{formatDate(product.addedDate)}</td>
                             <td className={`px-2 small d-flex table-light`}>
-                                <Button  variant="danger"  size="sm">
+                                <Button  variant="danger" onClick={(event)=>deleteProductLocal(product.productId)}  size="sm">
                                 <RiDeleteBin5Fill/>
                                 </Button>
                                 <Button className=" ms-2" variant="warning" size="sm">

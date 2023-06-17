@@ -5,6 +5,7 @@ import { getAllProducts } from "../../services/product.service"
 import { toast } from "react-toastify"
 import SingleProductView from "../../components/admin/SingleProductView"
 import { PRODUCT_PAGE_SIZE } from "../../services/helper.service"
+import Swal from "sweetalert2"
 
 const ViewProducts=()=>{
     const [products,setProducts]=useState(undefined)
@@ -33,6 +34,14 @@ const ViewProducts=()=>{
                     toast.error("Error in load products")
                 
             })
+    }
+    //
+    const updateProductList=(productId)=>{
+       const newArray= products.content.filter(p=>p.productId!=productId)
+        setProducts({
+            ...products,
+            content:newArray
+        })
     }
     //products view
     const productsView=()=>{
@@ -63,7 +72,7 @@ const ViewProducts=()=>{
                     <tbody>
                         {
                             products.content.map((product,index)=>(
-                                <SingleProductView key={index} index={index} product={product} />
+                                <SingleProductView key={index} index={index} product={product} updateProductList={updateProductList} />
                             ))
                         }
                     </tbody>

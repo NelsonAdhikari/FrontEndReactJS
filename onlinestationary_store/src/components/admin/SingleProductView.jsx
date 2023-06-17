@@ -38,7 +38,7 @@ const SingleProductView=({
                             <td className="px-2 small">{product.stock? 'IN' : 'OUT'}</td>
                             <td className="px-2 small">{product.category ? product.category.title : 'null'}</td>
                             <td className="px-2 small">{formatDate(product.addedDate)}</td>
-                            <td className={`px-2 small d-flex ${getBackgroundForProduct()}`}>
+                            <td className={`px-2 small d-flex table-light`}>
                                 <Button  variant="danger"  size="sm">
                                 <RiDeleteBin5Fill/>
                                 </Button>

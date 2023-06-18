@@ -77,7 +77,9 @@ const ViewProducts=()=>{
                 <Modal.Title>{currentProduct.title}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                {/* product picture */}
+             <Card className="shadow-sm">
+                <Card.Body>
+                       {/* product picture */}
                 <Container className="text-center py-3">
                     <img style={{
                         height:'300px'
@@ -85,14 +87,43 @@ const ViewProducts=()=>{
                 </Container>
 
                 {/* information table */}
-                <Table>
+                <Table striped bordered responsive className="text-center">
                     <thead>
                     <tr>
                         <th>Info</th>
+                        <th>Value</th>
+
                     </tr>
                     </thead>
                     <tbody>
+                    <tr>
+                            <td>Product Id</td>
+                            <td className="fw-bold">{currentProduct.productId}</td>
+
+                        </tr>
                         <tr>
+                            <td>Available Quantity</td>
+                            <td className="fw-bold">{currentProduct.quantity}</td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td className="fw-bold">Rs.{currentProduct.price}</td>
+                        </tr>
+                        <tr>
+                            <td>Discounted Price</td>
+                            <td className="fw-bold">Rs.{currentProduct.discountedPrice}</td>
+                        </tr>
+                        <tr className={currentProduct.live?'':'table-danger'}>
+                            <td>Live</td>
+                            <td className="fw-bold">{currentProduct.live?'Live':'NOT'}</td>
+                        </tr>
+                        <tr className={currentProduct.stock?'':'table-danger'}>
+                            <td>Stock</td>
+                            <td className="fw-bold">{currentProduct.stock?'IN':'NOT'}</td>
+                        </tr>
+                        <tr>
+                            <td>Category</td>
+                            <td className="fw-bold">{currentProduct.category?.title}</td>
 
                         </tr>
                     </tbody>
@@ -102,12 +133,14 @@ const ViewProducts=()=>{
                <div className="p-2 border border-1" dangerouslySetInnerHTML={{__html:currentProduct.description}}>
                 
                </div>
+                </Card.Body>
+             </Card>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={closeProductViewModal}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={closeProductViewModal}>Save Changes</Button>
+                {/* <Button variant="primary" onClick={closeProductViewModal}>Save Changes</Button> */}
               </Modal.Footer>
             </Modal>
           </>

@@ -1,15 +1,14 @@
-import { useEffect, useRef } from "react"
-import { useState } from "react"
+import { useEffect, useRef, useState} from "react"
 import {  Card, Col, Container, Form, Pagination, Row, Table, Modal, Button, FormGroup, InputGroup} from "react-bootstrap"
-import { getAllProducts } from "../../services/product.service"
-import { toast } from "react-toastify"
+import {toast} from "react-toastify"
 import SingleProductView from "../../components/admin/SingleProductView"
 import { PRODUCT_PAGE_SIZE, getProductImageUrl } from "../../services/helper.service"
 import defaultImage from '../../assets/default_profile.jpg'
 import ShowHtml from "../../components/ShowHtml"
 import { Editor } from "@tinymce/tinymce-react"
 import { getCategories } from "../../services/CategoryService"
-import { updateProduct } from "../../services/product.service"
+import { updateProduct, addProductImage, getAllProducts} from "../../services/product.service"
+
 
 
 
@@ -24,7 +23,7 @@ const ViewProducts=()=>{
         imagePreview:undefined
     })
 
-    const[categoryChangeId,setCategoryChangeId]=useState('')
+    // const[categoryChangeId,setCategoryChangeId]=useState('')
 
 
     useEffect(()=>{
@@ -116,6 +115,21 @@ const ViewProducts=()=>{
         updateProduct(currentProduct,currentProduct.productId)
         .then(data=>{
             console.log(data)
+
+            //update image also
+            addProductImage(imageUpdate.image,currentProduct.productId)
+            .then(ImageData=>{
+                console.log(ImageData)
+                setCurrentProduct({
+                    ...currentProduct,
+                    productImageName:ImageData.imageName
+                })
+                toast.success("Image Updated!!")   
+            }).catch(error=>{
+                console.log(error)
+                toast.error("Error in Image Upload")
+            })
+
             const newArray=products.content.map(p=>{
                 if(p.productId === currentProduct.productId)
                 return data
@@ -126,17 +140,18 @@ const ViewProducts=()=>{
                 ...products,
                 content: newArray
             })
+
         })
     }
     //handle file change
     const handleFileChange=(event)=>{
-        if(event.target.files[0].type==='image/png'|| event.target.files[0].type=='image/jpeg'){
+        if(event.target.files[0].type==='image/png'|| event.target.files[0].type==='image/jpeg'){
             //preview show
             const reader = new FileReader()
             reader.onload = (r)=>{
                 setImageUpdate({
-                    imagePreviw:r.target.result,
-                    image:event.target.files[0]
+                    imagePreviw: r.target.result,
+                    image: event.target.files[0]
                 })   
             }
             reader.readAsDataURL(event.target.files[0])
@@ -151,7 +166,7 @@ const ViewProducts=()=>{
 
     //
     const updateProductList=(productId)=>{
-       const newArray= products.content.filter(p=>p.productId!=productId)
+       const newArray= products.content.filter(p=>p.productId!==productId)
         setProducts({
             ...products,
             content:newArray
@@ -274,6 +289,7 @@ const ViewProducts=()=>{
                     })}
                     
                     />
+                    </FormGroup>
                     {/* {product Description} */}
                 <Form.Group className="mt-3">
                     <Form.Label>Product Description</Form.Label>
@@ -289,10 +305,11 @@ const ViewProducts=()=>{
                     value={product.description}
                     /> */}
                     <Editor 
+
                     apiKey=""
-                    
-                    onInit={(evt, editor) => editorRef.current = editor}
-                   
+
+                    onInit={(evt, editor) => editorRef.current = editor}   
+
                     init={{
                         height: 380,
                         menubar: true,
@@ -315,7 +332,7 @@ const ViewProducts=()=>{
                       
                     />
                 </Form.Group>       
-                </FormGroup>
+                
                 <Row>
                     <Col>
                       {/* {product price} */}
@@ -409,20 +426,18 @@ const ViewProducts=()=>{
                     </Container>
                     <Form.Label>Select product Image</Form.Label>
                     <InputGroup>
-                    <Form.Control type={'file'}
+                    <Form.Control type={"file"}
                     onChange={(event) => handleFileChange(event)}
                    
                     />   
-                    <Button onClick={(event) => {
+                    <Button onClick={event=>{
                         setImageUpdate({
-                            imagePreview: undefined,
-                            image: undefined
-
+                            imagePreview:undefined,
+                            image:undefined
                         })
                     }}
-                           
-                    
                     variant="outline-warning">Clear</Button>
+                     
                     </InputGroup> 
                 </Form.Group >
 
@@ -434,7 +449,7 @@ const ViewProducts=()=>{
                         {
                             categories && categories.content.map(cat => {
                                 return(
-                                    <option selected={cat.categoryId == currentProduct.category?.categoryId} value={cat.categoryId} key={cat.categoryId}>{cat.title}</option>
+                                    <option selected={cat.categoryId === currentProduct.category?.categoryId} value={cat.categoryId} key={cat.categoryId}>{cat.title}</option>
                                 )
                             })
                         }
@@ -512,7 +527,7 @@ const ViewProducts=()=>{
                       {/* 0 -- total pages-1   */}
                      {
                        [...Array(products.totalPages)].map((ob,i)=>i).map(item=>{
-                         return products.pageNumber==item ? <Pagination.Item active key={item}>{item+1}</Pagination.Item> :<Pagination.Item onClick={(event)=>{
+                         return products.pageNumber===item ? <Pagination.Item active key={item}>{item+1}</Pagination.Item> :<Pagination.Item onClick={(event)=>{
                             getProducts(item,PRODUCT_PAGE_SIZE,'addedDate','desc')
                          }} key={item}>{item+1}</Pagination.Item>
                         }

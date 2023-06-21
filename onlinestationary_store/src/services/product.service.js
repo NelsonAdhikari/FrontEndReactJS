@@ -44,4 +44,13 @@ export const updateProduct=(product,productId)=>{
     return privateAxios
     .put(`/products/${productId}`,product)
     .then((response)=>response.data);
-}
+};
+
+
+//update the category of the product
+
+export const updateProductCategory = (categoryId, productId) => {
+    return privateAxios
+      .put(`/categories/${categoryId}/products/${productId}`)
+      .then((res) => res.data);
+  };

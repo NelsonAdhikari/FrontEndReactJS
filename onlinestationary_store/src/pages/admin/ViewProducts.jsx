@@ -1,18 +1,44 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useState } from "react"
-import {  Card, Col, Container, Form, Pagination, Row, Table, Modal, Button } from "react-bootstrap"
+import {  Card, Col, Container, Form, Pagination, Row, Table, Modal, Button, FormGroup, InputGroup} from "react-bootstrap"
 import { getAllProducts } from "../../services/product.service"
 import { toast } from "react-toastify"
 import SingleProductView from "../../components/admin/SingleProductView"
 import { PRODUCT_PAGE_SIZE, getProductImageUrl } from "../../services/helper.service"
 import defaultImage from '../../assets/default_profile.jpg'
+import ShowHtml from "../../components/ShowHtml"
+import { Editor } from "@tinymce/tinymce-react"
+import { getCategories } from "../../services/CategoryService"
+import { updateProduct } from "../../services/product.service"
+
 
 
 
 const ViewProducts=()=>{
     const [products,setProducts]=useState(undefined)
     const [currentProduct,setCurrentProduct]=useState(undefined)
+    const editorRef= useRef()
+    const [categories,setCategories]=useState(undefined)
+    const [imageUpdate,setImageUpdate]=useState({
+        image:undefined,
+        imagePreview:undefined
+    })
 
+    const[categoryChangeId,setCategoryChangeId]=useState('')
+
+
+    useEffect(()=>{
+        getCategories(0,10000)
+        .then(data=>{
+            setCategories({...data})
+            console.log(data)
+        })
+            .catch(error=>{
+                console.log(error)
+   
+        })
+    },[])
+//view product state variables
     const [show, setShow] = useState(false);
     const closeProductViewModal = () => {
             setShow(false)
@@ -22,6 +48,21 @@ const ViewProducts=()=>{
         setCurrentProduct(product)   
         setShow(true)
     };
+
+    // #END view product state variables
+
+    //  edit product state variables
+    const [showEditModal, setShowEditModal] = useState(false);
+    const closeEditProductModel=(event,product) =>{
+          setShowEditModal(false);
+    }
+
+    const openEditProductModel=(event,product) =>{
+        setCurrentProduct(product)
+         setShowEditModal(true);
+    }
+
+    // END edit product state variables
 
     useEffect(()=>{
         getProducts(0,PRODUCT_PAGE_SIZE,'addedDate','desc')
@@ -48,6 +89,66 @@ const ViewProducts=()=>{
                 
             })
     }
+
+    //handle update form submit
+    const handleUpdateFormSubmit=(event)=>{
+        event.preventDefault()
+        console.log(currentProduct)
+        if(currentProduct.title===''){
+            toast.error("Title Required!! ")
+            return
+        }
+        if(currentProduct.description===''){
+            toast.error("Description Required!!")
+            return
+        }
+        if(currentProduct.price===''){
+            toast.error("Price Required!!")
+            return
+        }
+        if(currentProduct.quantity===''){
+            toast.error("Quantity Required!!")
+            return
+        }
+        
+
+        //form submit api call
+        updateProduct(currentProduct,currentProduct.productId)
+        .then(data=>{
+            console.log(data)
+            const newArray=products.content.map(p=>{
+                if(p.productId === currentProduct.productId)
+                return data
+
+                return p
+            })
+            setProducts({
+                ...products,
+                content: newArray
+            })
+        })
+    }
+    //handle file change
+    const handleFileChange=(event)=>{
+        if(event.target.files[0].type==='image/png'|| event.target.files[0].type=='image/jpeg'){
+            //preview show
+            const reader = new FileReader()
+            reader.onload = (r)=>{
+                setImageUpdate({
+                    imagePreviw:r.target.result,
+                    image:event.target.files[0]
+                })   
+            }
+            reader.readAsDataURL(event.target.files[0])
+        }else{
+            toast.error("Invalid File Type!!")
+            setImageUpdate({
+                image:undefined,
+                imagePreviw:undefined
+            })
+        }
+    }
+
     //
     const updateProductList=(productId)=>{
        const newArray= products.content.filter(p=>p.productId!=productId)
@@ -130,7 +231,8 @@ const ViewProducts=()=>{
                 </Table>
 
                {/* description */}
-               <div className="p-2 border border-1" dangerouslySetInnerHTML={{__html:currentProduct.description}}>
+               <div className="p-2 border border-1">
+                <ShowHtml htmlText={currentProduct.description}/>
                 
                </div>
                 </Card.Body>
@@ -141,6 +243,217 @@ const ViewProducts=()=>{
                   Close
                 </Button>
                 {/* <Button variant="primary" onClick={closeProductViewModal}>Save Changes</Button> */}
+              </Modal.Footer>
+            </Modal>
+          </>
+        )
+    }
+
+    //update modal
+    const editProductModalView=()=>{
+        return currentProduct && (
+            <>
+            
+            <Modal size="xl" animation={false} show={showEditModal} onHide={closeEditProductModel}>
+              <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {/* {JSON.stringify(currentProduct)} */}
+              <Form onSubmit={handleUpdateFormSubmit}>
+                {/* {product Title} */}
+                <FormGroup className="mt-3">
+                    <Form.Label>Product Title</Form.Label>
+                    <Form.Control 
+                    type="text"
+                    placeholder="Enter Here"
+                    value={currentProduct.title}
+                    onChange={event=>setCurrentProduct({
+                        ...currentProduct,
+                        title:event.target.value
+                    })}
+                    
+                    />
+                    {/* {product Description} */}
+                <Form.Group className="mt-3">
+                    <Form.Label>Product Description</Form.Label>
+
+                    {/* <Form.Control 
+                       as={'textarea'}
+                       rows={6} 
+                       placeholder="Enter here"
+                       onChange={(event)=>setProduct({
+                        ...product,
+                        description:event.target.value
+                    })}
+                    value={product.description}
+                    /> */}
+                    <Editor 
+                    apiKey=""
+                    
+                    onInit={(evt, editor) => editorRef.current = editor}
+                   
+                    init={{
+                        height: 380,
+                        menubar: true,
+                        plugins: [
+                          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                          'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                        ],
+                        toolbar: 'undo redo | blocks | ' +
+                          'bold italic forecolor | alignleft aligncenter ' +
+                          'alignright alignjustify | bullist numlist outdent indent | ' +
+                          'removeformat | help',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                      }}
+                      value={currentProduct.description}
+                      onEditorChange={event=>setCurrentProduct({
+                        ...currentProduct,
+                        description:editorRef.current.getContent()
+                      })}
+                      
+                    />
+                </Form.Group>       
+                </FormGroup>
+                <Row>
+                    <Col>
+                      {/* {product price} */}
+                    <FormGroup className="mt-3">
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control 
+                    type="number"
+                    placeholder="Enter Here"
+                    value={currentProduct.price}
+                    onChange={event=>setCurrentProduct({
+                        ...currentProduct,
+                        price:event.target.value
+                    })}
+                   
+                    />
+                    </FormGroup>
+                    </Col>
+                    
+                    <Col>
+
+                     {/* {discounted price} */}
+                    <FormGroup className="mt-3">
+                    <Form.Label>Discounted Price</Form.Label>
+                    <Form.Control 
+                    type="number"
+                    value={currentProduct.discountedPrice}
+                    onChange={event=>setCurrentProduct({
+                        ...currentProduct,
+                        discountedPrice:event.target.value
+                    })}
+                   
+                    
+                    />
+                    </FormGroup>
+                    </Col>
+                </Row>
+                {/* {product Quantity} */}
+                <Form.Group className="mt-3">
+                    <Form.Label>Product Quantity</Form.Label>
+                    <Form.Control
+                     type="number"
+                     placeholder="Enter here"
+                     value={currentProduct.quantity}
+                     onChange={event=>setCurrentProduct({
+                        ...currentProduct,
+                        quantity:event.target.value
+                    })}
+                     
+                     />
+                </Form.Group>
+                <Row className="mt-3 px-1">
+                   <Col>
+                   {/* {product live} */}
+                   <Form.Check
+                   type="switch"
+                   label={"Live"}
+                   checked={currentProduct.live}
+                   onChange={event=>setCurrentProduct({
+                    ...currentProduct,
+                    live:!currentProduct.live
+                })}
+                   
+                   />
+                   
+                   </Col>
+                   <Col>
+                   {/* {product stock} */}
+                    <Form.Check
+                   type="switch"
+                   label={"Stock"}
+                   checked={currentProduct.stock}
+                   onChange={event=>setCurrentProduct({
+                    ...currentProduct,
+                    stock:!currentProduct.stock
+                })} 
+                   
+                   />
+                   </Col>
+                </Row>
+                {/* {product image} */}
+                <Form.Group className="my-5">
+                    <Container className="text-center py-4 border border-2">
+                        <p className="text-muted">Image Preview</p>
+                        <img 
+                        className="img-fluid" 
+                        style={{
+                            maxHeight:'250px'
+                        }}
+                        src={imageUpdate.imagePreview ? imageUpdate.imagePreview : getProductImageUrl(currentProduct.productId)}
+                        alt="" />
+                    </Container>
+                    <Form.Label>Select product Image</Form.Label>
+                    <InputGroup>
+                    <Form.Control type={'file'}
+                    onChange={(event) => handleFileChange(event)}
+                   
+                    />   
+                    <Button onClick={(event) => {
+                        setImageUpdate({
+                            imagePreview: undefined,
+                            image: undefined
+
+                        })
+                    }}
+                           
+                    
+                    variant="outline-warning">Clear</Button>
+                    </InputGroup> 
+                </Form.Group >
+
+                   {/* {JSON.stringify(selectedCategoryId)} */}
+                <Form.Group className="mt-3">
+                    <Form.Label>Select Category</Form.Label>
+                      <Form.Select>
+                        <option value="none">None</option>
+                        {
+                            categories && categories.content.map(cat => {
+                                return(
+                                    <option selected={cat.categoryId == currentProduct.category?.categoryId} value={cat.categoryId} key={cat.categoryId}>{cat.title}</option>
+                                )
+                            })
+                        }
+                         
+
+                      </Form.Select>
+                </Form.Group>
+                <Container className="text-center mt-3">
+                <Button type="submit" variant="success" size="sm">Save Detail</Button>
+               
+                </Container>
+
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={closeEditProductModel}>
+                  Close
+                </Button>
+                
               </Modal.Footer>
             </Modal>
           </>
@@ -176,7 +489,14 @@ const ViewProducts=()=>{
                     <tbody>
                         {
                             products.content.map((product,index)=>(
-                                <SingleProductView key={index} index={index} product={product} updateProductList={updateProductList} openProductViewModal={openProductViewModal} />
+                                <SingleProductView 
+                                key={index} 
+                                index={index} 
+                                product={product} 
+                                updateProductList={updateProductList} 
+                                openProductViewModal={openProductViewModal} 
+                                openEditProductModel={openEditProductModel} 
+                                />
                             ))
                         }
                     </tbody>
@@ -227,6 +547,10 @@ const ViewProducts=()=>{
             </Container>
             {
                 viewProductModalView()
+                
+            }
+            {
+                editProductModalView()
             }
             
         </>

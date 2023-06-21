@@ -11,7 +11,8 @@ const SingleProductView=({
     index,
     product,
     updateProductList,
-    openProductViewModal
+    openProductViewModal,
+    openEditProductModel
 })=>{
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -116,7 +117,7 @@ const SingleProductView=({
                                 <Button className=" ms-2" onClick={(event)=>openProductViewModal(event,product)} variant="warning" size="sm">
                                 <GrView/>
                                 </Button>
-                                <Button className="ms-2" variant="success" size="sm">
+                                <Button onClick={(event)=>openEditProductModel(event,product)} className="ms-2" variant="success" size="sm">
                                 <GrUpdate/>
                                 </Button>
                             </td>

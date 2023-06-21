@@ -54,3 +54,10 @@ export const updateProductCategory = (categoryId, productId) => {
       .put(`/categories/${categoryId}/products/${productId}`)
       .then((res) => res.data);
   };
+
+  //search product service
+  export const searchProduct=(query)=>{
+    return privateAxios.get(`/products/search/${query}`).then((res)=>res.data);
+
+
+  };

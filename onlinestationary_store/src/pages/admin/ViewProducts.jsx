@@ -7,13 +7,15 @@ import defaultImage from '../../assets/default_profile.jpg'
 import ShowHtml from "../../components/ShowHtml"
 import { Editor } from "@tinymce/tinymce-react"
 import { getCategories } from "../../services/CategoryService"
-import { updateProduct, addProductImage, getAllProducts} from "../../services/product.service"
+import { updateProduct, addProductImage,searchProduct, getAllProducts, updateProductCategory} from "../../services/product.service"
 
 
 
 
 
 const ViewProducts=()=>{
+
+    
     const [products,setProducts]=useState(undefined)
     const [currentProduct,setCurrentProduct]=useState(undefined)
     const editorRef= useRef()
@@ -23,7 +25,8 @@ const ViewProducts=()=>{
         imagePreview:undefined
     })
 
-    // const[categoryChangeId,setCategoryChangeId]=useState('')
+    const[categoryChangeId,setCategoryChangeId]=useState('')
+    const[searchQuery,setSearchQuery]=useState('')
 
 
     useEffect(()=>{
@@ -129,6 +132,35 @@ const ViewProducts=()=>{
                 console.log(error)
                 toast.error("Error in Image Upload")
             })
+
+            //category update
+            if(categoryChangeId==='none' || categoryChangeId=== currentProduct.category?.categoryId){
+
+            }else{
+                updateProductCategory(categoryChangeId,currentProduct.productId)
+                .then(catData=>{
+                    console.log(catData)
+                    toast.success("Category Updated")
+                    setCurrentProduct({
+                        ...currentProduct,
+                        category:catData.category
+                    })
+                    const newArray=products.content.map(p=>{
+                        if(p.productId === currentProduct.productId)
+                        return catData
+                        return p
+                    })
+                    setProducts({
+                        ...products,
+                        content: newArray
+                    })
+        
+
+                }).catch(error=>{
+                    console.log(error)
+                    
+                })
+            }
 
             const newArray=products.content.map(p=>{
                 if(p.productId === currentProduct.productId)
@@ -444,7 +476,9 @@ const ViewProducts=()=>{
                    {/* {JSON.stringify(selectedCategoryId)} */}
                 <Form.Group className="mt-3">
                     <Form.Label>Select Category</Form.Label>
-                      <Form.Select>
+                      <Form.Select onChange={(event)=>{
+                        setCategoryChangeId(event.target.value)
+                      }}>
                         <option value="none">None</option>
                         {
                             categories && categories.content.map(cat => {
@@ -458,7 +492,7 @@ const ViewProducts=()=>{
                       </Form.Select>
                 </Form.Group>
                 <Container className="text-center mt-3">
-                <Button type="submit" variant="success" size="sm">Save Detail</Button>
+                <Button onClick={handleUpdateFormSubmit} type="submit" variant="success" size="sm">Save Detail</Button>
                
                 </Container>
 
@@ -474,6 +508,25 @@ const ViewProducts=()=>{
           </>
         )
     }
+    //search product
+    const searchProducts=()=>{
+            if(searchQuery===undefined || searchQuery.trim()==='')
+            {
+                return
+            }
+            //call server api to search
+            searchProduct(searchQuery)
+            .then(data=>{
+                if(data.content.length<=0){
+                    toast.info("No Error Found")
+                    return
+                }
+                setProducts(data)
+            }).catch(error=>{
+                console.log(error)
+                toast.error("Error in search product")
+            })
+    }
 
     //products view
     const productsView=()=>{
@@ -483,7 +536,15 @@ const ViewProducts=()=>{
                     <h5 className="mb-3">View Products</h5>
                     <Form.Group className="mb-2">
                         <Form.Label>Search Product</Form.Label>
-                        <Form.Control type="text" placeholder="Search here" />
+                        <InputGroup>
+                        <Form.Control 
+                        onChange={(event)=>setSearchQuery(event.target.value)}
+                        value={searchQuery}
+                        type="text" 
+                        placeholder="Search here"
+                        />
+                        <Button onClick={searchProducts} variant="outline-info">Search</Button>
+                        </InputGroup>
                     
                     </Form.Group>
                 <Table className="text-center" bordered striped  hover variant="secondary"  responsive size="sm" >

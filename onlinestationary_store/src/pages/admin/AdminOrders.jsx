@@ -292,10 +292,7 @@ const AdminOrders=()=>{
                                     })
                                   }
                                 }
-                                />
-
-
-                                
+                                />             
                             </Form.Group>
 
                             {/* payment Status */}
@@ -337,9 +334,15 @@ const AdminOrders=()=>{
                             <Form.Group className="mt-3">
                                 <Form.Label>Select Date</Form.Label>
                                 <Form.Control type="text" 
-                                 value={formatDate(selectedOrder.deliveredDate)}
+                                
+                                 onChange={event=>{
+                                    setSelectedOrder({
+                                        ...selectedOrder,
+                                        deliveredDate:event.target.value
+                                    })
+                                 }}
                                 />
-                                <p className="text-muted">Format Date: DD/MM/YYYY</p>
+                                <p className="text-muted">Format Date: YYYY-MM-DD</p>
                             </Form.Group>
                             <Container className="text-center">
                             <Button type="submit" variant="primary">

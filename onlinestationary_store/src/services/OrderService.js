@@ -11,6 +11,11 @@ export const getAllOrders= async(pageNumber,pageSize,sortBy,sortDir)=>{
 };
 
 //update orders
+export const updateOrder=async (order,orderId)=>{
+   const result =  await privateAxios.put(`/orders/${orderId}`,order)
+   return result.data
+
+}
 
 //get orders of users
 

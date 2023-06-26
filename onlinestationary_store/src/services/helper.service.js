@@ -8,6 +8,9 @@ export const getProductImageUrl=(productId)=>{
 };
 
 export const formatDate=(timeInLongs)=>{
+    if (!timeInLongs){
+      return null;
+    }
     const date = new Date(timeInLongs);
     return date.toLocaleString() ;
 }

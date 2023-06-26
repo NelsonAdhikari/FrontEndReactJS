@@ -1,11 +1,13 @@
 import { useEffect } from "react"
 import { useState } from "react"
-import { getAllOrders } from "../../services/OrderService"
+import { getAllOrders, updateOrder } from "../../services/OrderService"
 import { ADMIN_ORDER_PAGE_SIZE, getProductImageUrl } from "../../services/helper.service"
-import { Card, Col, Container, Row, Modal, Button , Table, ListGroup, Badge} from "react-bootstrap"
+import { Card, Col, Container, Row, Modal, Button , Table, ListGroup, Badge, Form} from "react-bootstrap"
 import SingleOrderView from "../../components/SingleOrderView"
 import { formatDate } from "../../services/helper.service"
 import InfiniteScroll from "react-infinite-scroll-component"
+import { toast } from "react-toastify"
+
 
 
 
@@ -15,6 +17,7 @@ const AdminOrders=()=>{
     const [selectedOrder,setSelectedOrder]=useState(undefined)
     const [currentPage,setCurrentPage]=useState(0)
 
+
     // const [fakeOrders,setFakeOrders]=useState([
     //     1,2,3,4,5
     // ])
@@ -23,12 +26,22 @@ const AdminOrders=()=>{
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [updateShow, setUpdateShow] = useState(false);
+    const handleUpdateClose = () => setUpdateShow(false);
+    const handleUpdateShow = () => setUpdateShow(true);
+
     const openViewOrderModal=(event,order)=>{
         console.log("view order button clicked ")
         console.log(event)
         console.log(order)
         setSelectedOrder({...order})
         handleShow(true)
+    }
+
+    const openEditOrderModal=(event,order)=>{
+        console.log("This is open Edit Order Modal")
+        setSelectedOrder({...order})
+        handleUpdateShow(true)
     }
 
     useEffect(()=>{
@@ -182,6 +195,171 @@ const AdminOrders=()=>{
           );
     }
 
+    //handle order update
+    const handleOrderUpdate=async(event)=>{
+        event.preventDefault()
+        console.log(selectedOrder)
+
+        if(selectedOrder.billingName.trim()===''){
+            toast.error("Billing Name Required!!")
+            return;
+        }
+        if(selectedOrder.billingPhone.trim()===''){
+            toast.error("Billing Phone Required!!")
+            return;
+        }
+        if(selectedOrder.billingAddress.trim()===''){
+            toast.error("Billing Address Required!!")
+            return;
+        }
+        try{
+          const data = await updateOrder(selectedOrder,selectedOrder.orderId)
+          toast.success("order details updated")
+
+         const newList= ordersData.content.map(item=>{
+            if(item.orderId===selectedOrder.orderId){
+                return data
+            }
+            else return item
+          })
+          setOrdersData({
+            ...ordersData,
+            content:newList
+          })
+        }catch(error){
+            console.log(error)
+            toast.error("Failed to update order!!")
+        }
+    }
+
+    //update order modal
+    const updateOrderModal=()=>{
+        return selectedOrder && (
+            <>
+                <Modal animation={false} size={'lg'} show={updateShow} onHide={handleUpdateClose}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Update Order</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form onSubmit={handleOrderUpdate}>
+                            {/* billing name */}
+                            <Form.Group>
+                                <Form.Label>Billing Name</Form.Label>
+                                <Form.Control type='text'
+                                value={selectedOrder.billingName}
+                                onChange={
+                              (event)=>{
+                                setSelectedOrder({
+                                    ...selectedOrder,
+                                    billingName:event.target.value
+                                })
+                              }
+                                }
+                                />    
+                            </Form.Group>
+                            
+                            {/* billing phone */}
+
+                            <Form.Group className="mt-3">
+                                <Form.Label>Billing Phone</Form.Label>
+                                <Form.Control type='text'
+                                value={selectedOrder.billingPhone}
+                                onChange={
+                              (event)=>{
+                                setSelectedOrder({
+                                    ...selectedOrder,
+                                    billingPhone:event.target.value
+                                })
+                              }
+                                }
+                                />          
+                            </Form.Group>
+
+                             {/* billing address */}
+
+                             <Form.Group className="mt-3">
+                                <Form.Label>Billing Address</Form.Label>
+                                <Form.Control 
+                                as={'textarea'} 
+                                type='text'
+                                rows={5}
+                                value={selectedOrder.billingAddress}
+                                onChange={
+                                  (event)=>{
+                                    setSelectedOrder({
+                                      ...selectedOrder,
+                                      billingAddress:event.target.value
+                                    })
+                                  }
+                                }
+                                />
+
+
+                                
+                            </Form.Group>
+
+                            {/* payment Status */}
+                            <Form.Group className="mt-3">
+                                <Form.Label>Payment Status</Form.Label>
+                                <Form.Select
+                                 onChange={(event)=>{
+                                    setSelectedOrder({
+                                        ...selectedOrder,
+                                        paymentStatus:event.target.value
+                                    })
+                                 }}
+                                >
+                                    <option selected={selectedOrder.paymentStatus==='NOTPAID'} value="NOTPAID">NOT PAID</option>
+                                    <option selected={selectedOrder.paymentStatus==='PAID'} value="PAID">PAID</option>
+
+                                </Form.Select>
+                            </Form.Group>
+
+                            {/* order Status */}
+                            <Form.Group className="mt-3">
+                                <Form.Label>Order Status</Form.Label>
+                                <Form.Select
+                                 onChange={(event)=>{
+                                    setSelectedOrder({
+                                        ...selectedOrder,
+                                        orderStatus:event.target.value
+                                    })
+                                 }}
+                                >
+                                    <option value="PENDING">PENDING</option>
+                                    <option value="DISPATCHED">DISPATCHED</option>
+                                    <option value="ONWAY">ONWAY</option>
+                                    <option value="DELIVERED">DELIVERED</option>
+                                </Form.Select>
+                            </Form.Group>
+                                
+                            {/* order delivered date */}
+                            <Form.Group className="mt-3">
+                                <Form.Label>Select Date</Form.Label>
+                                <Form.Control type="text" 
+                                 value={formatDate(selectedOrder.deliveredDate)}
+                                />
+                                <p className="text-muted">Format Date: DD/MM/YYYY</p>
+                            </Form.Group>
+                            <Container className="text-center">
+                            <Button type="submit" variant="primary">
+                        Save Changes
+                    </Button>
+                            </Container>
+
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={handleUpdateClose}>
+                        Close
+                    </Button>
+                    
+                    </Modal.Footer>
+                </Modal>
+            </>
+        )
+    }
+
     const ordersView=()=>{
         return(
           <Card className="shadow-sm">
@@ -202,6 +380,7 @@ const AdminOrders=()=>{
                     key={o.orderId}
                     order={o}
                     openViewOrderModal={openViewOrderModal}
+                    openEditOrderModal={openEditOrderModal}
                     />
                 )
             })
@@ -219,6 +398,7 @@ const AdminOrders=()=>{
                 <Col>
                     {ordersData && ordersView()} 
                     {viewOrderModal()}
+                    {updateOrderModal()}
                 </Col>
             </Row>
           </Container>

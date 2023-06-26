@@ -3,7 +3,8 @@ import { formatDate } from "../services/helper.service"
 
 const SingleOrderView=({
     order,
-    openViewOrderModal
+    openViewOrderModal,
+    openEditOrderModal
 })=>{
 
     
@@ -47,7 +48,7 @@ const SingleOrderView=({
                     </Col>
                 </Row>
                 <Container>
-                    <Button variant="danger" size='sm' className="me-2">Update</Button>
+                    <Button onClick={(event)=>openEditOrderModal(event,order)} variant="danger" size='sm' className="me-2">Update</Button>
                     <Button onClick={(event)=>{
                             openViewOrderModal(event,order)
                     }} size="sm" variant="info">Order Details</Button>

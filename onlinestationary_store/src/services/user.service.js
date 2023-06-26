@@ -35,3 +35,15 @@ export const updateUserProfilePicture=(file,userId)=>{
   return privateAxios.post(`/users/image/${userId}`,data).then((response)=>response.data)
 
 }
+
+export const getAllUsers=(pageNumber,pageSize,sortBy,sortDir)=>{
+  return privateAxios.get(`/users?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`)
+  .then((res)=>res.data);
+
+}
+
+// //search product service
+// export const searchUser=(query)=>{
+//   return privateAxios.get(`/users/search/${query}`).then((res)=>res.data);
+// };
+

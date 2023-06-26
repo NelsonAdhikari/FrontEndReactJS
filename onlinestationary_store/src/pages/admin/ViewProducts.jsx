@@ -189,7 +189,7 @@ const ViewProducts = () => {
   };
   //handle file change
   const handleFileChange = (event) => {
-    console.log("Inagedata: ", event);
+    console.log("Imagedata: ", event);
     if (
       event.target.files[0].type === "image/png" ||
       event.target.files[0].type === "image/jpeg"

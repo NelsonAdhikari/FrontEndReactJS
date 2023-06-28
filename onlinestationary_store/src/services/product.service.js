@@ -31,6 +31,12 @@ export const getAllProducts=(pageNumber=0,pageSize=10,sortBy='addedDate',sortDir
     .then(response=>response.data);
 
 }
+//get all live products
+export const getAllLive=(pageNumber=0,pageSize=10,sortBy='addedDate',sortDir="asc")=>{
+    return privateAxios.get(`/products/live?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`)
+    .then(response=>response.data);
+
+}
 
 //delete product
 export const deleteProduct=(productId)=>{

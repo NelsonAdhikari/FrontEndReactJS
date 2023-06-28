@@ -583,7 +583,7 @@ const ViewProducts = () => {
     searchProduct(searchQuery)
       .then((data) => {
         if (data.content.length <= 0) {
-          toast.info("No Error Found");
+          toast.warning("No Search Found");
           return;
         }
         setProducts(data);

@@ -25,8 +25,7 @@ import ViewCategories from './pages/admin/ViewCategories';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminUsers from './pages/admin/AdminUsers';
 import AddCategory from './pages/admin/AddCategory';
-
-
+import StorePage from './pages/users/StorePage';
 
 
 
@@ -44,10 +43,11 @@ function App() {
         <Route path="/about" element={<About />}/>
         <Route path="/services" element={<Services />}/>
         <Route path="/contact" element={<Contact />}/>
-        <Route path="/store" element={<Store />}/>
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
+        <Route path="/store" element={<StorePage/>}/>
+
 
         <Route path="/users" element={<Dashboard/>}>
         <Route path="home" element={<Home/>}/>

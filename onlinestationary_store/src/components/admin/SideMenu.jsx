@@ -9,12 +9,14 @@ import {FaCartPlus} from 'react-icons/fa'
 import {FaUserAlt} from 'react-icons/fa'
 import {MdDashboard} from 'react-icons/md'
 import {MdOutlineLogout} from 'react-icons/md'
-
-
-
+import { useContext } from "react"
+import UserContext from "../../context/UserContext"
 
 
 const SideMenu=()=>{
+
+   const {logout}= useContext(UserContext)
+
     return(
         <>
             <ListGroup variant="flush"className="sticky-top" >
@@ -55,7 +57,9 @@ const SideMenu=()=>{
                     <MdDashboard size={20}/>
                     <span className="ms-2">Dashboard</span>
                     </ListGroup.Item>
-                <ListGroup.Item action>
+                <ListGroup.Item action onClick={(event)=>{
+                    logout()
+                }}>
                     <MdOutlineLogout size={20}/>
                     <span className="ms-2">Logout</span>
                     </ListGroup.Item>

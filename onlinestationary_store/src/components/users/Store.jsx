@@ -6,6 +6,7 @@ import {getAllLive, getAllProducts} from '../../services/product.service'
 import { toast } from 'react-toastify'
 import SingleProductCard from './SingleProductCard'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { STORE_PAGE_PRODUCT_SIZE } from '../../services/helper.service'
 
 
 
@@ -17,12 +18,12 @@ function Store() {
 
   useEffect(()=>{
     loadCategories(0, 100000)
-    loadProducts(currentPage,9,'addedDate','desc')
+    loadProducts(currentPage,STORE_PAGE_PRODUCT_SIZE,'addedDate','desc')
   },[])
 
   useEffect(()=>{
     if(currentPage>0){
-      loadProducts(currentPage,9,'addedDate','desc')
+      loadProducts(currentPage,STORE_PAGE_PRODUCT_SIZE,'addedDate','desc')
 
     }
 

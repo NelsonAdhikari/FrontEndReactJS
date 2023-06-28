@@ -3,6 +3,7 @@ import { Badge, Button, Card, Col, Container, Row } from 'react-bootstrap'
 import { getProductImageUrl } from '../../services/helper.service'
 import "../users/SingleProductCard.css"
 import defaultImage from "../../assets/default_profile.jpg"
+import { Link } from 'react-router-dom'
 
 const SingleProductCard = ({product}) => {
   return (
@@ -27,7 +28,7 @@ const SingleProductCard = ({product}) => {
             <b><span className='h4 ms-2'>Rs.{product.discountedPrice}</span></b>
            </Container>
            <Container className='d-grid mt-4'>
-            <Button variant='success' size='sm'>View Products</Button>
+            <Button as={Link} to={`/store/products/${product.productId}`} variant='success' size='sm'>View Products</Button>
            </Container>
         </Card.Body>
     </Card>

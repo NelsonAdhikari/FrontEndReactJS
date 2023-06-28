@@ -67,3 +67,8 @@ export const updateProductCategory = (categoryId, productId) => {
 
 
   };
+
+  // get single product detail
+  export const getProduct=(productId)=>{
+    return privateAxios.get(`/products/${productId}`).then(res=>res.data);
+  };

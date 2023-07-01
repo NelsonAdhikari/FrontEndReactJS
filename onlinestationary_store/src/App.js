@@ -4,7 +4,6 @@ import './App.css';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from './pages/Services';
-import Store from './pages/Store';
 import Cart from './pages/Cart';
 import Dashboard from "./pages/users/Dashboard";
 import Profile from './pages/users/Profile';
@@ -27,6 +26,7 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AddCategory from './pages/admin/AddCategory';
 import StorePage from './pages/users/StorePage';
 import ProductView from './pages/users/ProductView';
+import CategoryStorePage from './pages/users/CategoryStorePage';
 
 
 
@@ -49,6 +49,10 @@ function App() {
         <Route path="/register" element={<Register/>}/>
         <Route path="/store" element={<StorePage/>}/>
         <Route path="store/products/:productId" element={<ProductView/>}/>
+        <Route
+        path="store/:categoryId/:categoryTitle"
+        element={<CategoryStorePage/>}
+        />
 
 
 

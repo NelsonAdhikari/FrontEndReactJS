@@ -264,6 +264,12 @@ console.log(data);
            description="Fill the form below to be a member of our store! Get Access to all product checkout."
            >
               {registerForm()}
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+
            </Base>
     );
 }

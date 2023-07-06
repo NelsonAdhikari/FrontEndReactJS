@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
@@ -7,8 +7,11 @@ import { Badge, Button, Card, Col, Container, Row } from 'react-bootstrap'
 import ShowHtml from '../../components/ShowHtml'
 import { getProductImageUrl } from '../../services/helper.service'
 import defaultImage from "../../assets/default_profile.jpg"
+import CartContext from '../../context/CartContext'
 
 function ProductView () {
+
+    const {cart,addItem}=useContext(CartContext)
 
     const [product,setProduct]=useState(null)
 
@@ -20,6 +23,10 @@ function ProductView () {
 
     const loadUser=(productId)=>{
         getProduct(productId).then(data=>setProduct(data)).catch(error=>console.log(error))
+    }
+
+    const handleAddItem=(productId,quantity)=>{
+        addItem(quantity,productId)
     }
 
     const productView=()=>{
@@ -51,7 +58,9 @@ function ProductView () {
                             <b><span className='h2 ms-2'>Rs.{product.discountedPrice}</span></b>
                             </Container>
                             <Container className='d-grid mt-4'>
-                            <Button  variant='danger' size='sm'>Add to Cart</Button>
+                            <Button  variant='danger' size='sm'
+                            onClick={event=>handleAddItem(product.productId,1)}
+                            >Add to Cart</Button>
                             <Button as={Link} to={'/store'}  variant='warning' className='mt-2' size='sm'>Go to Store</Button>
 
                             </Container>

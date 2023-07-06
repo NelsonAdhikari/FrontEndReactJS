@@ -10,7 +10,16 @@ function Services(){
         buttonType="warning"
         buttonText="Home"
         >
-            <div>This is Services Page </div>
+            <h1 className="text-center">This is Service Page</h1>
+            <p className="text-center">We offer some best deal for best service.</p>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+
         </Base>
     );
   

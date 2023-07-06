@@ -2,6 +2,7 @@ import { Button, Toast } from "react-bootstrap";
 import Base from "../components/Base";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Index(){
     function showSuccessToast(){
@@ -34,13 +35,21 @@ function Index(){
         }
         buttonEnabled={true}
         buttonText="Shop Now"
-        buttonType="primary"
-    > 
+        buttonType="primary"     
+        > 
     
-            <h1>Working on Home Page</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, commodi?</p>
-          <Button variant="success" onClick={showSuccessToast}>Toastify Success</Button> 
-          <Button variant="primary" onClick={getDataFromServer}>Get Data from Fake API</Button> 
+            <h1 className="text-center">Working on Home Page</h1>
+            <p className="text-center">Progress left to construct</p>
+          {/* <Button variant="success" onClick={showSuccessToast}>Toastify Success</Button> 
+          <Button variant="primary" onClick={getDataFromServer}>Get Data from Fake API</Button>  */}
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+
         </Base>
     );
   

@@ -6,10 +6,12 @@ import logo from "../assets/StationaryLogo.png";
 import { NavLink } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { useContext } from 'react';
+import CartContext from '../context/CartContext';
 
 
 const CustomNavbar=()=>{
   const userContext=useContext(UserContext)
+  const {cart,setCart}=useContext(CartContext)
   const doLogout=()=>{
     userContext.logout()
   }
@@ -48,7 +50,7 @@ const CustomNavbar=()=>{
             </Nav>
             <Nav>
               <Nav.Link as={NavLink} to="/store">Store</Nav.Link>
-              <Nav.Link as={NavLink} to="/cart">Cart( 40 )</Nav.Link>
+              <Nav.Link as={NavLink} to="/cart">Cart( {cart && cart.items.length} )</Nav.Link>
 
               {
                (userContext.isLogin) ? (

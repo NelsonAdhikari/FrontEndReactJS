@@ -4,7 +4,16 @@ function About(){
     return (
         <Base
         title="StationeryStore / About Us" description={null}>
-            <div>This is About Page.</div>
+            <h1 className=" text-center" >This is About Page </h1>
+            <p className="text-center">Progress is left to be construct.</p>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+
         </Base>
     );
   

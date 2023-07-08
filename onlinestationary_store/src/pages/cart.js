@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import CartContext from "../context/CartContext";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Alert, Button, Card, Col, Container, Row } from "react-bootstrap";
 import SingleCartItemView from "../components/users/SingleCartItemView";
+import { Link } from "react-router-dom";
 
 function Cart(){
    const {cart,setCart,addItem,removeItem,clearCart}=useContext(CartContext);
@@ -51,7 +52,17 @@ function Cart(){
     <Container>
         <Row>
             <Col>
-            {cart && cartView()}
+            {cart && (cart.items.length>0 ? cartView():(<Alert variant="danger" className="mt-3 shadow-sm border border-0 text-center"><h3>No Items in Cart</h3>
+            <p>Please go to Store to add some  products in the Card.</p>
+            <Button as={Link} to="/store">Go to Store</Button>
+            </Alert>))}
+            {
+                !cart && (
+                <Alert variant="info" className="mt-3 shadow-sm border border-0 text-center"><h3>You are Not Logged In!!</h3>
+                <p>In order to add item to cart do login</p>
+                <Button as={Link} to="/login" variant="success">Login</Button>
+                </Alert>
+                )}
             </Col>
         </Row>
     </Container>

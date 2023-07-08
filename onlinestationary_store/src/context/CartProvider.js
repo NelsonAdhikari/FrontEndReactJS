@@ -6,11 +6,18 @@ import { useContext } from 'react'
 import UserContext from './UserContext'
 import { addItemToCart, getCart, removeItemFromCart } from '../services/CartService'
 import { toast } from 'react-toastify'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import { Alert } from 'react-bootstrap'
+
 
 const CartProvider = ({children}) => {
     const {isLogin,userData}= useContext(UserContext);
     const [cart,setCart]=useState(null);
     const [heading,setHeading]=useState("Initial heads");
+    
+
+    const mySwal =withReactContent(Swal)
 
     //load user cart initially
     const loadUserCart = async (userId) => {
@@ -28,12 +35,30 @@ const CartProvider = ({children}) => {
       if(isLogin){
         //get user cart
         loadUserCart(userData.user.userId);
-      }  
+      }else{
+        setCart(null)
+      } 
     },[isLogin])
 
     //add item to cart
     const addItem=async(quantity,productId,next)=>{
       try {
+        if(!isLogin){
+
+         
+            mySwal.fire({
+              title: "Not Logged In",
+              html: <>
+              <Alert variant='danger' className='border border-0'>
+              Please do login to add item to Cart
+              </Alert>
+              </>,
+              icon: "error",
+              
+        }).then(()=>{  
+        })
+        return;
+        }
       const result = await addItemToCart(
         userData.user.userId,
         productId,

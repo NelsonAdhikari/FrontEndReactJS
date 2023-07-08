@@ -4,6 +4,8 @@ import {getProductImageUrl} from '../../services/helper.service'
 import defaultImage from "../../assets/default_profile.jpg"
 import { useContext } from "react";
 import CartContext from '../../context/CartContext';
+import { toast } from 'react-toastify';
+
 
 
 
@@ -54,10 +56,24 @@ const SingleCartItemView = ({item}) => {
     <div className='mt-2'>
         <Row>
             <Col className='d-grid'>
-            <Button variant='success' size='sm'>+</Button>
+            <Button onClick={event=>{
+                const increasedQuantity=item.quantity+1         
+                    addItem(increasedQuantity,item.product.productId,()=>{
+                        toast.success("Quantity Increased by 1")
+                    })
+            }} variant='success' size='sm'>+</Button>
             </Col>
             <Col className='d-grid'>
-            <Button variant='warning' size='sm'>-</Button>
+            <Button onClick={event=>{
+                const decreaseQuantity=item.quantity-1
+                if(decreaseQuantity>0){
+                    addItem(decreaseQuantity,item.product.productId,()=>{
+                        toast.info("Quantity Decreased by 1")
+                    })
+                }else{
+                    toast.warning("Quantity cannot be less than 1")
+                }
+            }} variant='warning' size='sm'>-</Button>
             </Col>
         </Row>
     </div>

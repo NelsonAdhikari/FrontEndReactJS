@@ -8,6 +8,7 @@ import ShowHtml from '../../components/ShowHtml'
 import { getProductImageUrl } from '../../services/helper.service'
 import defaultImage from "../../assets/default_profile.jpg"
 import CartContext from '../../context/CartContext'
+import { toast } from 'react-toastify';
 
 function ProductView () {
 
@@ -26,7 +27,9 @@ function ProductView () {
     }
 
     const handleAddItem=(productId,quantity)=>{
-        addItem(quantity,productId)
+        addItem(quantity,productId,()=>{
+            toast.success("Product is added to cart")
+        })
     }
 
     const productView=()=>{

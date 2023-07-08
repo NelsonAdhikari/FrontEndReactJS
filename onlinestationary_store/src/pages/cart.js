@@ -14,7 +14,6 @@ function Cart(){
     return amount;
    }
 
-   
 
    const cartView=()=>{
     return(<>

@@ -49,3 +49,7 @@
   /* margin-top: 2px;
   border: 1px solid #61dafb !important; */
 }
+
+.animation{
+  transition: all 100ms linear !important;
+}

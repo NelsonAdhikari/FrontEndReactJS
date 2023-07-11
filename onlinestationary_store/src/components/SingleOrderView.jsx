@@ -22,7 +22,7 @@ const SingleOrderView=({
                 </Row>
                 <Row className="mt-3">
                     <Col>
-                    <Table bordered striped>
+                    <Table bordered striped className={order.paymentStatus == 'PAID'?'table-success':'table-danger'}>
                         <tbody>
                             <tr>
                                 <td>Billing Name</td>
@@ -52,8 +52,9 @@ const SingleOrderView=({
                     </Table>
                     </Col>
                 </Row>
-                <Container>
-                    <Button onClick={(event)=>openEditOrderModal(event,order)} variant="danger" size='sm' className="me-2">Update</Button>
+                <Container className="text-center">
+                   {openEditOrderModal && <Button onClick={(event)=>openEditOrderModal(event,order)} variant="danger" size='sm' className="me-2">Update</Button> }
+                   {(!openEditOrderModal && order.paymentStatus=='NOTPAID') && <Button onClick={(event)=>{}} variant="success" size='sm' className="me-2">Pay to Complete Order</Button> }
                     <Button onClick={(event)=>{
                             openViewOrderModal(event,order)
                     }} size="sm" variant="info">Order Details</Button>

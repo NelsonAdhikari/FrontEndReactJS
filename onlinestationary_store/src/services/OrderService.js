@@ -18,13 +18,13 @@ export const updateOrder=async (order,orderId)=>{
 }
 
 //create order
-const createOrder=async(orderDetail)=>{
+export const createOrder=async(orderDetail)=>{
    const result= await privateAxios.post(`/orders`,orderDetail)
    return result.data
 }
 
 //get orders of users
-const getOrdersOfUser = async(userId)=>{
+export const getOrdersOfUser = async(userId)=>{
    const result = await privateAxios.get(`/orders/users/${userId}`)
    return result.data
 }

@@ -4,10 +4,25 @@ import { Alert, Button, Card, Col, Container, Form, Row } from "react-bootstrap"
 import SingleCartItemView from "../components/users/SingleCartItemView";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import UserContext from "../context/UserContext"
+import {createOrder} from "../services/OrderService"
+import { ORDER_STATUS, PAYMENT_STATUS } from "../services/helper.service";
 
 function Cart(){
     const [orderPlacedClicked,setOrderPlacedClicked]=useState(false)
    const {cart,setCart,addItem,removeItem,clearCart}=useContext(CartContext);
+   const {userData,isLogin}=useContext(UserContext)
+
+   const [orderDetails,setOrderDetails]=useState({
+        billingAddress: '',
+        billingName: '',
+        billingPhone: '',
+        cartId: '',
+        orderStatus: '',
+        paymentStatus: '',
+        userId: ''
+   })
 
    const getTotalCartAmount=()=>{
     let amount=0;
@@ -16,6 +31,49 @@ function Cart(){
     })
     return amount;
    }
+  // create order
+   const handleOrderCreation=async()=>{
+        
+    if(orderDetails.billingName.trim()===""){
+        toast.info("Billing Name Required",{
+            position:"top-left"
+        })
+        return;
+    }
+        if(orderDetails.billingPhone.trim()===""){
+        toast.info("Billing Phone Required",{
+            position:"top-left"
+        })
+        return;
+    }
+    if(orderDetails.billingAddress.trim()===""){
+        toast.info("Billing Address Required",{
+            position:"top-left"
+        })
+        return;
+    }
+        //set required other details
+        orderDetails.cartId=cart.cartId;
+        orderDetails.orderStatus=ORDER_STATUS;
+        orderDetails.paymentStatus=PAYMENT_STATUS;
+        orderDetails.userId=userData.user.userId;
+
+
+        console.log(orderDetails);
+
+        try {
+           const result = await createOrder(orderDetails);
+           console.log(result)
+           toast.success("order created proceed for payment ")
+           setCart({
+            ...cart,
+            items: [],
+           })
+        } catch (error) {
+            console.log(error)
+            toast.error("Error in creating product ")
+        }
+    }
 
    const orderFormView=()=>{
     return ( 
@@ -23,20 +81,41 @@ function Cart(){
         {/* billing name */}
         <Form.Group className="mt-3">
             <Form.Label>Billing Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter your name" />
+            <Form.Control type="text" placeholder="Enter your name" value={orderDetails.billingName} 
+            onChange={(event)=>{
+                setOrderDetails({
+                    ...orderDetails,
+                    billingName: event.target.value,
+            })
+            }}
+            />
         </Form.Group>
          {/* billing phone */}
         <Form.Group className="mt-3">
             <Form.Label>Billing Phone</Form.Label>
-            <Form.Control type="number" placeholder="Enter your phoneNo" />
+            <Form.Control type="number" placeholder="Enter your phoneNo" value={orderDetails.billingPhone} 
+            onChange={(event)=>{
+                setOrderDetails({
+                    ...orderDetails,
+                    billingPhone: event.target.value,
+            })
+            }} />
         </Form.Group>
          {/* billing Address */}
         <Form.Group className="mt-3">
             <Form.Label>Billing Address</Form.Label>
-            <Form.Control rows={6} as={'textarea'} placeholder="Enter your address" />
+            <Form.Control rows={6} as={'textarea'} placeholder="Enter your address" value={orderDetails.billingAddress} 
+            onChange={(event)=>{
+                setOrderDetails({
+                    ...orderDetails,
+                    billingAddress: event.target.value,
+            })
+            }} />
         </Form.Group>
         <Container className="mt-3 text-center">
-            <Button variant="success" size="sm">Create Order & Proceed to Pay</Button>
+            <Button variant="success" size="sm" onClick={event=>{
+                handleOrderCreation()
+            }}>Create Order & Proceed to Pay</Button>
         </Container>
     </Form>
    )
@@ -58,7 +137,7 @@ function Cart(){
                     <Col>
                         {
                             cart.items.map((item)=>(
-                                <SingleCartItemView item={item}  />
+                                <SingleCartItemView key={item.cartItemId} item={item}  />
                             ))
                         }
                     </Col>

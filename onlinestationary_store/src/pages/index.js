@@ -3,30 +3,67 @@ import Base from "../components/Base";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { infoWithImageInRightSection, trendingProducts, infoWithImageInLeftSection, contactForm } from "./HomePageComponents";
+import { useState } from "react";
 
 function Index(){
-    function showSuccessToast(){
-        console.log("Toast added");
-        // toast.success("Success Toast");
-        toast.warn("Invalid!!");
-           
-        }
+    const [products,setProducts]=useState([
+        {
+            addedDate: "2023-07-13T04:40:49.646Z",
+            category: {
+              categoryId: "string",
+              coverImage: "string",
+              description: "string",
+              title: "Nelson"
+            },
+            description: "string",
+            discountedPrice: 500,
+            live: true,
+            price: 600,
+            productId: "string",
+            productImageName: "string",
+            quantity: 0,
+            stock: true,
+            title: "Product Title"
+          },
+          {
+            addedDate: "2023-07-13T04:40:49.646Z",
+            category: {
+              categoryId: "string",
+              coverImage: "string",
+              description: "string",
+              title: "Nelson"
+            },
+            description: "string",
+            discountedPrice: 500,
+            live: true,
+            price: 600,
+            productId: "string",
+            productImageName: "string",
+            quantity: 0,
+            stock: true,
+            title: "Product Title"
+          },
+          {
+            addedDate: "2023-07-13T04:40:49.646Z",
+            category: {
+              categoryId: "string",
+              coverImage: "string",
+              description: "string",
+              title: "Nelson"
+            },
+            description: "string",
+            discountedPrice: 500,
+            live: true,
+            price: 600,
+            productId: "string",
+            productImageName: "string",
+            quantity: 0,
+            stock: true,
+            title: "Product Title"
+          }
 
-       const getDataFromServer=()=>{
-        toast.info("Got data from server");
-
-        axios.get("https://jsonplaceholder.typicode.com/posts").then((response)=>{
-            console.log(response.data)
-            toast.success("Request Completed")
-        })
-            .catch((error)=>{
-                console.log(error)
-                toast.error("Request Failed")
-            })
-           
-       };
-       
-
+    ])
     return (
         <Base 
         title="Your friendly stationery" 
@@ -35,23 +72,19 @@ function Index(){
         }
         buttonEnabled={true}
         buttonText="Shop Now"
-        buttonType="primary"     
+        buttonType="primary"
+        buttonLink="/store"     
         > 
-    
-            <h1 className="text-center">Working on Home Page</h1>
-            <p className="text-center">Progress left to construct</p>
-          {/* <Button variant="success" onClick={showSuccessToast}>Toastify Success</Button> 
-          <Button variant="primary" onClick={getDataFromServer}>Get Data from Fake API</Button>  */}
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+
+       <div className="my-4">{trendingProducts(products)}</div>
+       <div style={{margin:"100px 0px"}}>{infoWithImageInRightSection("https://source.unsplash.com/random/200x200?sig=1","Lorem ipsum dolor sit amet.","Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium voluptates atque tempore dolorem tenetur.")}</div>
+       <div style={{margin:"100px 0px"}}>{infoWithImageInLeftSection("https://source.unsplash.com/random/200x200?sig=1","Lorem ipsum dolor sit amet.","Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium voluptates atque tempore dolorem tenetur.")}</div>
+        <div className="my-4">{contactForm()}</div>
+        <div style={{margin:"100px 0px"}}>{infoWithImageInRightSection("https://source.unsplash.com/random/200x200?sig=1","Lorem ipsum dolor sit amet.","Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium voluptates atque tempore dolorem tenetur.")}</div>
 
         </Base>
-    );
-  
+    ); 
 }
+
+
 export default Index;

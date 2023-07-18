@@ -10,7 +10,7 @@ import Profile from './pages/users/Profile';
 import AboutUser from './pages/users/AboutUser';
 import CustomNavbar from './components/Navbar';
 import Contact from './pages/Contact';
-import { ToastContainer, Zoom } from 'react-toastify';
+import { ToastContainer, Zoom, toast } from 'react-toastify';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/users/Home';
@@ -28,10 +28,14 @@ import StorePage from './pages/users/StorePage';
 import ProductView from './pages/users/ProductView';
 import CategoryStorePage from './pages/users/CategoryStorePage';
 import CartProvider from './context/CartProvider';
+import Loading from './components/Loading';
+import useLoader from './hooks/useLoader';
 
 
 
 function App() {
+ const loading = useLoader();
+ 
  
  //jsx-syntax extension of  jsx
   return (
@@ -41,6 +45,7 @@ function App() {
     <BrowserRouter>
       <ToastContainer position="bottom-center" theme="dark" draggable transition={Zoom}/>
     <CustomNavbar/>
+    <Loading show={loading} />
       <Routes>
         <Route path="/" element={<Index />}/>
         <Route path="/about" element={<About />}/>

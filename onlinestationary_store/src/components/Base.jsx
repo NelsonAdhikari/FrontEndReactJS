@@ -20,7 +20,7 @@ const Base=({
    
     return (
         <div>
-            <Container fluid className="bg-danger p-5 text-white text-center d-flex justify-content-center align-items-center" style={styleContainer}>
+            <Container fluid className="bg-info p-5 text-white text-center d-flex justify-content-center align-items-center" style={styleContainer}>
                 <div>
                 <h3 className="text-center">{title}</h3>
                 <p className="text-center">{description && description}</p>

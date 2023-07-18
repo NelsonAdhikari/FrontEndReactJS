@@ -33,7 +33,7 @@ const CustomNavbar=()=>{
               <Nav.Link as={NavLink} to="/services">Features</Nav.Link>
              
               
-              <NavDropdown title="Categories" id="collasible-nav-dropdown">
+              {/* <NavDropdown title="Categories" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Desktop organisers</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
                      Filing and storage
@@ -43,7 +43,7 @@ const CustomNavbar=()=>{
                 <NavDropdown.Item href="#action/3.4">
                     Consumables
                 </NavDropdown.Item>
-              </NavDropdown>
+              </NavDropdown> */}
               <Nav.Link as={NavLink} to="/about">About</Nav.Link>
               <Nav.Link as={NavLink} to="/contact">Contact Us</Nav.Link>
               

@@ -73,7 +73,7 @@ function Index(){
         buttonEnabled={true}
         buttonText="Shop Now"
         buttonType="primary"
-        buttonLink="/store"     
+        buttonLink="/store"   
         > 
 
        <div className="my-4">{trendingProducts(products)}</div>

@@ -1,21 +1,21 @@
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Services from './pages/Services';
-import Cart from './pages/Cart';
-import Dashboard from "./pages/users/Dashboard";
+import Index from "./pages/index";
+import About from "./pages/about";
+import Services from './pages/services';
+import Cart from './pages/cart';
+import Dashboard from "./pages/users/dashboard";
 import Profile from './pages/users/Profile';
 import AboutUser from './pages/users/AboutUser';
 import CustomNavbar from './components/Navbar';
-import Contact from './pages/Contact';
+import Contact from './pages/contact';
 import { ToastContainer, Zoom, toast } from 'react-toastify';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import Home from './pages/users/Home';
+import Register from './pages/register';
+import Login from './pages/login';
+import Home from './pages/users/home';
 import UserProvider from './context/UserProvider';
-import Order from './pages/users/Order';
+import Order from './pages/users/order';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminHome from './pages/admin/AdminHome';
 import AddProduct from "./pages/admin/AddProduct";
@@ -89,5 +89,6 @@ function App() {
     </UserProvider>
   );
 }
+
 
 export default App;

@@ -11,19 +11,19 @@ const Contact=()=>{
        title="StationeryStore / Contact Us" description={null}
        >
     <div className="row contactus ">
-    <div className="col-md-6 ">
+    <div className="col-md-5 ">
           <img className="mt-4 ms-4"
             src={ContactUs}
             style={{ width: "100%",height:"93%" }}
           />
         </div>
-        <div className="col-md-4">
+        <div className="col-md-6">
           <Card className="mt-4 ms-5">
             <Card.Body>
             <h1 className="bg-dark p-2 text-white text-center">CONTACT US</h1>
             <p className="text-justify mt-2">
-            any query and info about prodduct feel free to call anytime we 24X7
-            vaialible
+            Any query about product info feel free to call anytime we are 24X7
+            available
           </p>
           <p className="mt-3">
             <BiMailSend /> : adhikarinelson0@gmail.com

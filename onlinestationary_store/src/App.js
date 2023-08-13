@@ -30,6 +30,7 @@ import CategoryStorePage from './pages/users/CategoryStorePage';
 import CartProvider from './context/CartProvider';
 import Loading from './components/Loading';
 import useLoader from './hooks/useLoader';
+import Khalti from "./components/khalti/khalti";
 
 
 
@@ -62,12 +63,12 @@ function App() {
         />
 
 
-
         <Route path="/users" element={<Dashboard/>}>
         <Route path="home" element={<Home/>}/>
         <Route path="profile/:userId" element={<Profile/>}/>
         <Route path="about" element={<AboutUser/>}/>
         <Route path="orders" element={<Order/>}/>
+        <Route path="khalti" element={<Khalti/>}/>
 
         </Route>
 

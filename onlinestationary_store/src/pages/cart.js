@@ -120,7 +120,9 @@ function Cart(){
             }} />
         </Form.Group>
         <Container className="mt-3 text-center">
-            <Button variant="success" size="sm" >Go to Order and Proceed to Pay</Button>
+            <Button variant="success" size="sm"  onClick={(event) => {
+              handleOrderCreation();
+              }} >Go to Order and Proceed to Pay</Button>
         </Container>
     </Form>
    )

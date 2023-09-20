@@ -4,11 +4,12 @@ import { BiMailSend, BiPhoneCall, BiSupport} from "react-icons/bi";
 import {FaGithub} from "react-icons/fa"
 import ContactUs from "../assets/Contact.jpeg"
 import { Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Contact=()=>{
     return (
        <Base
-       title="StationeryStore / Contact Us" description={null}
+       title="StationaryStore / Contact Us" description={null}
        >
     <div className="row contactus ">
     <div className="col-md-5 ">
@@ -26,13 +27,13 @@ const Contact=()=>{
             available
           </p>
           <p className="mt-3">
-            <BiMailSend /> : adhikarinelson0@gmail.com
+            <BiMailSend /> : <Link to="https://mail.google.com/mail/u/2/#inbox">adhikarinelson0@gmail.com</Link>
           </p>
           <p className="mt-3">
             <BiPhoneCall /> : +977-9808490677
           </p>
           <p className="mt-3">
-            <FaGithub /> : https://github.com/NelsonAdhikari
+            <FaGithub /> : <Link to="https://github.com/NelsonAdhikari">https://github.com/NelsonAdhikari</Link>
           </p>
           <p className="mt-3">
             <BiSupport /> : 1800-0000-0000 (toll free)

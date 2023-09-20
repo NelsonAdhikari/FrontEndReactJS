@@ -6,7 +6,7 @@ let config = {
   publicKey: myKey.publicTestKey,
   productIdentity: "123766",
   productName: "My Ecommerce Store",
-  productUrl: "https://a.khalti.com/api/v2/",
+  productUrl: "https://a.khalti.com/api/v2/epayment/initiate/",
   eventHandler: {
     onSuccess(payload) {
       // hit merchant api for initiating verfication

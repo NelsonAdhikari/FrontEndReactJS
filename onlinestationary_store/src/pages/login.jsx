@@ -196,7 +196,7 @@ const Login = () => {
 
 
   return (
-    <Base title="StationeryStore / Login" description="Login for purchasing products.">
+    <Base title="StationaryStore / Login" description="Login for purchasing products.">
       {loginForm()}
       <br />
       <br />

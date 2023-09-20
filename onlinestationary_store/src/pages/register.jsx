@@ -121,7 +121,7 @@ console.log(data);
                 <Container className="text-center mb-3">
                 <img src={logo} alt="Store logo" width={80} height={80} />
                 </Container>
-                <h3 className="mb-4 text-center text-uppercase">StationeryStore SignUp Here</h3>
+                <h3 className="mb-4 text-center text-uppercase">StationaryStore SignUp Here</h3>
                 
                 <Form noValidate onSubmit={submitForm}>
                   <Form.Group className="mb-3" controlId="formName">
@@ -260,7 +260,7 @@ console.log(data);
   };
     return (
            <Base
-           title="StationeryStore / Signup"
+           title="StationaryStore / Signup"
            description="Fill the form below to be a member of our store! Get Access to all product checkout."
            >
               {registerForm()}

@@ -3,6 +3,7 @@ import profileImage from "../../assets/default_profile.jpg";
 import { BASE_URL } from "../../services/helper.service";
 import { useContext } from "react";
 import UserContext from "../../context/UserContext";
+import { NavLink } from 'react-router-dom';
 
 
 const UserProfileView = ({user=null, handleShowModal}) =>{
@@ -67,7 +68,7 @@ const UserProfileView = ({user=null, handleShowModal}) =>{
                     (isLogin && userData.user.userId===user.userId) ? (
                         <Container className="text-center mt-3">
                         <Button variant="success"size="lg" className="me-3" onClick={handleShowModal}>Update</Button>
-                        <Button variant="danger" size="lg">Orders</Button>
+                        <Button variant="danger" size="lg" as={NavLink} to="/users/orders">Orders</Button>
                      </Container>
                     ) : ''
                     }

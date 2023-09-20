@@ -22,7 +22,7 @@ const CustomNavbar=()=>{
             
             <img src={logo} alt="logo" height={25} width={25} />
 
-            <span className='ms-1 mt-1'>StationeryStore</span> 
+            <span className='ms-1 mt-1'>StationaryStore</span> 
             
             </Navbar.Brand>
 
@@ -62,8 +62,9 @@ const CustomNavbar=()=>{
 
                   </>
                )}
-               <Nav.Link as={NavLink} to={`/users/profile/${userContext.userData.user.userId}`}>{userContext.userData.user.name}</Nav.Link>
                <Nav.Link as={NavLink} to="/users/orders">Orders</Nav.Link>
+               <Nav.Link as={NavLink} to={`/users/profile/${userContext.userData.user.userId}`}>{userContext.userData.user.name}</Nav.Link>
+               
                <Nav.Link onClick={doLogout}>Logout</Nav.Link>
               </>
               ) : (

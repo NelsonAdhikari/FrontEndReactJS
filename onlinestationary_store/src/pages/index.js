@@ -66,7 +66,7 @@ function Index(){
     ])
     return (
         <Base 
-        title="Your friendly stationery" 
+        title="Your friendly stationary" 
         description={
             "Welcome to our Stationary Store, We will inspire your writing."
         }

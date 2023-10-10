@@ -10,10 +10,7 @@ import {createOrder} from "../services/OrderService"
 import { ORDER_STATUS, PAYMENT_STATUS } from "../services/helper.service";
 import useJwtTokenExpiration from "../hooks/useJwtTokenExpiration";
 
-// import KhaltiCheckout from "khalti-checkout-web"
-// import config from "../components/khalti/KhaltiConfig";
 
-// let checkout = new KhaltiCheckout(config);
 
 function Cart(){
   const flag =  useJwtTokenExpiration();

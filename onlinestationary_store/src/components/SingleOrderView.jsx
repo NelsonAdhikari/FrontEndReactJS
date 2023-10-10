@@ -1,10 +1,9 @@
 import { Button, Card, Col, Container, Row, Table } from "react-bootstrap"
 import { formatDate } from "../services/helper.service"
 import { Link } from "react-router-dom"
-import KhaltiCheckout from "khalti-checkout-web"
-import config from "./khalti/KhaltiConfig";
+import KhaltiConfig from "./khalti/KhaltiConfig";
 
-let checkout = new KhaltiCheckout(config);
+
 
 const SingleOrderView=({
     order,
@@ -12,6 +11,7 @@ const SingleOrderView=({
     openEditOrderModal
 })=>{
 
+  
     
     return(
         <Card className="border border-0 shadow-sm mb-5">
@@ -58,7 +58,8 @@ const SingleOrderView=({
                 </Row>
                 <Container className="text-center">
                    {openEditOrderModal && <Button onClick={(event)=>openEditOrderModal(event,order)} variant="danger" size='sm' className="me-2">Update</Button> }
-                   {(!openEditOrderModal && order.paymentStatus=='NOTPAID') && <Button onClick={() => checkout.show({ amount: 10000 })} variant="success" size='sm' className="me-2">Pay to Complete Order</Button> }
+                   {(!openEditOrderModal && order.paymentStatus=='NOTPAID') && <Button onClick={() => KhaltiConfig(1,200,'product_name')} variant="success" size='sm' className="me-2">Pay to Complete Order</Button> }
+                   
                     <Button onClick={(event)=>{
                             openViewOrderModal(event,order)
                     }} size="sm" variant="info">Order Details</Button>

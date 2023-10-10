@@ -1,50 +1,54 @@
-import { toast } from "react-toastify";
-import myKey from "./Khaltikey";
 import axios from "axios";
-let config = {
-  // replace this key with yours
-  publicKey: myKey.publicTestKey,
-  productIdentity: "123766",
-  productName: "My Ecommerce Store",
-  productUrl: "https://a.khalti.com/api/v2/epayment/initiate/",
-  eventHandler: {
-    onSuccess(payload) {
-      // hit merchant api for initiating verfication
-      console.log(payload);
-      let data = {
-        token: payload.token,
-        amount: payload.amount,
-      };
+import myKey from "./Khaltikey";
+// import Order from "../pages/users/order";
 
-      axios
-        .get(
-          `https://meslaforum.herokuapp.com/khalti/${data.token}/${data.amount}/${myKey.secretKey}`
-        )
-        .then((response) => {
-          console.log(response.data);
-          alert("Payment Recorded");
-        })
-        .catch((error) => {
-          console.log(error);
-          toast.error("Payment Cancelled by user !!")
-        });
+const KhaltiConfig = async (orderId,totalAmount,product_name) => {
+    const key = 'd105277c689249ce83bbdf51d53c4d59';
+    const url = "https://a.khalti.com/api/v2/epayment/initiate/";
+
+    const amountInRupees = parseInt(totalAmount) * 100;
+    const payload = {
+      return_url: `http://localhost:3000/orders`,
+      website_url: "http://localhost:3000",
+      amount: amountInRupees, 
+      purchase_order_id: orderId, 
+      purchase_order_name: product_name,
+      customer_info: {
+        "name": 'user_name',
+        "phone": "9811496763",
+        "address": "Address 3 Main Street"
     },
-    // onError handler is optional
-    onError(error) {
-      // handle errors
-      console.log(error);
-    },
-    onClose() {
-      console.log("widget is closing");
-    },
-  },
-  paymentPreference: [
-    "KHALTI",
-    "EBANKING",
-    "MOBILE_BANKING",
-    "CONNECT_IPS",
-    "SCT",
-  ],
+  };
+    
+    const config = {
+        headers: {
+            "Content-type": "application/json",
+            Authorization: `key ${myKey.secretKey}`,
+        },
+    };
+
+    try {
+        const response = await axios.post(url, payload, config);
+
+        console.log("Response  is" , response)
+
+        if (response.status === 200) {
+            const data = response.data;
+            console.log({data});       
+
+            window.location.href = data.payment_url
+
+          
+
+            console.log({data});   
+        
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
 };
 
-export default config;
+export default KhaltiConfig;

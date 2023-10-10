@@ -6,6 +6,7 @@ import defaultImage from "../../assets/default_profile.jpg"
 import { Link } from 'react-router-dom'
 
 const SingleProductCard = ({product}) => {
+  console.log('product',product)
   return (
     <Card className='m-1 shadow-sm'>
         <Card.Body>

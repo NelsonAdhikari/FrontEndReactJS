@@ -7,6 +7,7 @@ import { infoWithImageInRightSection, infoWithImageInLeftSection, contactForm } 
 import TrendingProducts from "./HomePageComponents";
 import React, {useState, useEffect} from "react";
 
+
 function Index(){
     // const [products,setProducts]=useState([
     //     {
@@ -100,7 +101,7 @@ function Index(){
         buttonEnabled={true}
         buttonText="Shop Now"
         buttonType="primary"
-       buttonLink="/store"
+        buttonLink="/store"
         > 
        <div className="my-4">{TrendingProducts(product)}</div>
        <div style={{margin:"100px 0px"}}>{infoWithImageInRightSection("https://source.unsplash.com/random/200x200?sig=1","Wanna Know More About Us?","Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium voluptates atque tempore dolorem tenetur.")}</div>

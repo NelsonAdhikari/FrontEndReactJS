@@ -1,4 +1,6 @@
-export const  BASE_URL='http://localhost:9090';
+// export const  BASE_URL='http://localhost:9090';
+export const  BASE_URL='https://stationarystorebackend-production.up.railway.app/';
+
 
 export const PRODUCT_PAGE_SIZE=5;
 export const ADMIN_ORDER_PAGE_SIZE=5;
